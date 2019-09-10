@@ -13,6 +13,7 @@
         <title>Twitter</title>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="main">
@@ -63,6 +64,24 @@
                     alert("The element has a vertical scrollbar!");
                 }
             }
+
+            $('text').live('keydown', function() {
+
+                // scrollbars apreared
+                if (this.clientHeight < this.scrollHeight) {
+
+                    var words = $(this).val().split(' ');
+                    var last_word = words.pop();
+                    var reduced = words.join(' ');
+                    $(this).val(reduced);
+                    $(this).css('height', '65px');
+
+                    $(this).after('<textarea class="text"></textarea>');
+                    $(this).next().focus().val(last_word);
+
+                }
+
+            });
 
         </script>
     </body>
