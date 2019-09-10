@@ -6,6 +6,9 @@
             . "</script>");
         unset($_SESSION['error']);
     }
+    if(!isset($_SESSION["user_id"])){
+        header("Location: login.php");
+    }
 ?>
 <!DOCTYPE HTML>
 <html>

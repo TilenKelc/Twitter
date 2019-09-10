@@ -11,13 +11,13 @@
 
     // Preveri ce je input registracija
     if(isset($_POST["sub"]) && $_POST["sub"] === "Register"){
-        $username = filter_input(trim(INPUT_POST, "username",FILTER_SANITIZE_STRING));
-        $password = filter_input(trim(INPUT_POST, "password",FILTER_SANITIZE_STRING));
-        $email = filter_input(trim(INPUT_POST, "email", FILTER_VALIDATE_EMAIL));
+        $username = filter_input(INPUT_POST, "username",FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 
         $pass = password_hash($password, PASSWORD_DEFAULT);
         
-        $stmt = $link->prepare("SELECT email, username FROM users WHERE (email = ?);");
+        $stmt = $link->prepare("SELECT email FROM users WHERE (email = ?);");
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -31,8 +31,9 @@
         else
         {   
             //Vstavi uporabnika
-            $stmt = $link->prepare("INSERT INTO users (username, password, email) VALUES (?,?,?)");
-            $stmt->bind_param('sss', $username, $pass, $email);
+            $date = date("Y-m-d");
+            $stmt = $link->prepare("INSERT INTO users (username, password, email, joined) VALUES (?,?,?,?)");
+            $stmt->bind_param('ssss', $username, $pass, $email, $date);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -44,21 +45,19 @@
         $pass = filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING);
 
         //Izbere ce uporabnik obstaja
-        $stmt = $link->prepare('SELECT * FROM users WHERE (email = ?) AND (password = ?);');
-        $stmt->bind_param("ss", $email, $pass);
+        $stmt = $link->prepare('SELECT * FROM users WHERE (email = ?)');
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
         //Preveri ce je povezava kaj vrnila
         if(mysqli_num_rows($result)==1)
         {
-            if (password_verify($pass, $row['pass'])) {
+            if (password_verify($pass, $row['password'])) {
                 $_SESSION['user_id'] = $row['id'];        
-                $_SESSION['user_type'] = $row['user_type'];        
+                $_SESSION['user_type'] = $row['type_id'];        
                 header("Location: index.php");
-                die();
             }
-            header("Location: index.php");
         }
         else
         {
