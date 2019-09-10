@@ -1,0 +1,224 @@
+html, body, main{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    padding: 0; 
+    margin: 0;
+}
+li{
+    list-style-type: none;
+    text-align: left;
+    font-size: 30px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    transition: 0.5s;
+    color: #66ccff;
+}
+ul{
+    width: 200px;
+    margin-left: 40%;
+    padding: 0;
+}
+li:hover{
+    cursor: pointer;
+    color: white;
+    background-color: #66ccff;
+    border-radius: 30px;
+    transition: 0.5s;
+}
+.active{
+    cursor: pointer;
+    color: white;
+    background-color: #66ccff;
+    border-radius: 30px;
+}
+.nav{
+    width: 30%;
+    float: left;
+    border-right: solid silver 0.5px;
+    height: 100vh;
+
+}
+.message{
+    width: 39%;
+    float: left;
+    border-right: solid silver 0.5px;
+    height: 100vh;
+
+}
+.sideline{
+    width: 30%;
+    float: left;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+.image{
+    width: 30px;
+    height: 30px;
+    margin-left: 45%;
+    margin-top: 20px;
+}
+.message>h2{
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.avatar>img{
+    height: 60px;
+    width: 60px;
+    background-color: silver;
+    border-radius: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    float: left;
+}
+/*Profile*/
+.avatar-profile>img{
+    height: 200px;
+    width: 200px;
+    background-color: silver;
+    border-radius: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    display: block;
+}
+.message>form>textarea{
+    float:left;
+    height: 50px;
+    width: 80%;
+    resize: none;
+    border-radius: 10px;
+    padding: 5px;
+    border: none;
+    margin-top: 25px;
+}
+.message>form>textarea:focus{
+    outline: none;
+}
+.message>h2{
+    border-bottom: 1px solid silver;
+    margin: 0;
+    padding: 0;
+    padding: 20px;
+}
+.message>form>input[type="submit"]{
+    width: 100px;
+    height: 40px;
+    background-color: white;
+    border: 1px #66ccff solid;
+    color: #66ccff;
+    font-size: 20px;
+    border-radius: 5px;
+    float: right;
+    margin-right: 40px;
+}
+.message>form>input[type="submit"]:hover{
+    cursor: pointer;
+    border: 2px #66ccff solid;
+    background-color: #fff8f7;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #66ccff;
+    background-color: white;
+    float: left;
+    width: 10%;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #fff8f7;
+}
+/*-----------------------------*/
+.left-side{
+    background-color: #66ccff;
+    width: 50%;
+    height: 100%;
+    float: left;
+    color: white;
+}
+.right-side{
+    width: 50%;
+    float: left;
+    height: 100%;
+}
+.box{
+    height: 300px;
+    width: 600px;
+    margin: auto;
+    padding-left: auto;
+    padding-right: auto;
+    text-align: center;
+    margin-top: 30%;
+}
+.box>img{
+    height: 200px;
+    width: 200px;
+}
+.right-side>form{
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    text-align: center;
+    margin-top: 25%;
+}
+.right-side>form>input, .message>form>input{
+    border-radius: 20px;
+    width: 300px;
+    height: 20px;
+    border: 1px silver solid;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.right-side>form>input:focus, .message>form>input:focus{
+    outline: none;
+    border: 1px #66ccff solid;
+}
+.right-side>form>input[type="submit"]{
+    width: 100px;
+    height: 40px;
+    margin-top: 10px;
+    padding: 0;
+    background-color: white;
+    border: 1px #66ccff solid;
+    color: #66ccff;
+    font-size: 20px;
+}
+.right-side>form>input[type="submit"]:hover{
+    cursor: pointer;
+    border: 2px #66ccff solid;
+    background-color: #fff8f7;
+}
+.right-side>form>a{
+    text-decoration: none;
+    color: black;
+    transition: 0.5s;
+}
+.right-side>form>a:hover{
+    color: silver;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.reg{
+    display: none;
+}
+.login{
+    display: block;
+}
+.pass-error{
+    visibility: hidden;
+}
