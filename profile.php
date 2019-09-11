@@ -1,4 +1,5 @@
 <?php
+    include_once ("./database.php");
     session_start();
     if(!isset($_SESSION["user_id"])){
         header("Location: login.php");
@@ -29,12 +30,21 @@
             <div class="message">
                 <h2>Home</h2>
                 <div class="avatar-profile"><img src="./img/avatar.png" alt="./img/avatar.png"></div>
-                <form method="POST" action="./tweets.php" enctype="multipart/form-data" class="profile">
-                    <input type="text" name="username" placeholder="Username">
-                    <textarea placeholder="Bio" class="text" name="bio"></textarea>
-                    <input type="text" name="location" placeholder="Location">
-                    <input type="date" name="born" max=""><!-- samozeleznik-->
-                    <input type="submit" name="button" value="TWEET">
+                <form method="POST" action="./user.php" enctype="multipart/form-data" class="profile">
+                    <?php
+                        // Izbere uporabnikove podatke
+                        $id =$_SESSION["user_id"];
+                        $sql = "SELECT * FROM users WHERE (id = $id);";
+                        $result = $link->query($sql);
+                        while($row = $result->fetch_assoc()) {
+                            echo "<input type='text' name='username' placeholder='Username' value='". $row["username"] ."' required>";
+                            echo "<textarea placeholder='Bio' class='text' name='bio'>". $row["bio"] ."</textarea>";
+                            echo "<input type='text' name='location' placeholder='Location' value='". $row["location"] ."'>";
+                            echo "<input type='date' name='born' value='". $row["born"] ."'>";
+                        }
+                    ?>
+                    <!-- samozeleznik-->
+                    <input type="submit" name="sub" value="Edit">
                 </form>
                 <div class="tweets">
 
