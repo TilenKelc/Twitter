@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if(!isset($_SESSION["user_id"])){
+        header("Location: login.php");
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -26,7 +29,7 @@
             <div class="message">
                 <h2>Home</h2>
                 <div class="avatar-profile"><img src="./img/avatar.png" alt="./img/avatar.png"></div>
-                <form method="POST" action="./tweets.php" enctype="multipart/form-data">
+                <form method="POST" action="./tweets.php" enctype="multipart/form-data" class="profile">
                     <input type="text" name="username" placeholder="Username">
                     <textarea placeholder="Bio" class="text" name="bio"></textarea>
                     <input type="text" name="location" placeholder="Location">
