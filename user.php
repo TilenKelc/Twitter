@@ -13,7 +13,14 @@
     if(isset($_POST["sub"]) && $_POST["sub"] === "Register"){
         $username = filter_input(INPUT_POST, "username",FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING);
-        $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
+
+        // Preveri ce je email email
+        if (filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL)){
+            $email = filter_input(INPUT_POST, "email");
+        } else {
+            $_SESSION["error"] = "Not a valid email";
+            header("Location: login.php");
+        }
 
         $pass = password_hash($password, PASSWORD_DEFAULT);
         
@@ -45,7 +52,7 @@
         $pass = filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING);
 
         //Izbere ce uporabnik obstaja
-        $stmt = $link->prepare('SELECT * FROM users WHERE (email = ?)');
+        $stmt = $link->prepare('SELECT * FROM users WHERE (email = ?);');
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -63,6 +70,22 @@
         {
             header("Location: login.php");
         }
+    }else if(isset($_POST["sub"]) && $_POST["sub"] === "Edit"){
+        $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
+        $location = filter_input(INPUT_POST, "location",FILTER_SANITIZE_STRING);
+        $bio = filter_input(INPUT_POST, "bio",FILTER_SANITIZE_STRING);
+        $born = filter_input(INPUT_POST, "born");
+        $id = $_SESSION["user_id"];
+
+        //Izbere ce uporabnik obstaja
+        $stmt = $link->prepare("UPDATE users SET username=?, location=?, bio=?, born=? WHERE id=?");
+        $stmt->bind_param("sssss", $username, $location, $bio, $born, $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        header("Location: profile.php");
+    }else if(isset($_GET["logout"]) && $_GET["logout"] === true){
+        session_destroy();
+        header("Location: login.php");
     }else {
         header("Location: login.php");
     }

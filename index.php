@@ -30,6 +30,7 @@
                     <li>Bookmarks</li>
                     <li>Lists</li>
                     <li onclick="location.href='profile.php'">Profile</li>
+                    <li onclick="location.href='user.php?logout=true'">Logout</li>
                     <li>More</li>
                 </ul>
             </div>
