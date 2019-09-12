@@ -38,19 +38,60 @@
                 <input type="password" name="password" placeholder="Password" required><br>
                 <input type="password" name="password_check" placeholder="Confirm Password" required><br>
                 <input type="submit" name="sub" value="Register"><br>
-                <a onclick="Change(1)">Back</a>
+                <a onclick="Change(1)">Back</a><br>
             </form>
+            <div class="face-google">
+                <!-- Facebook login -->
+                <?php
+                    require ("vendor/autoload.php");
+                    if(isset($_GET['state'])) {
+                        $_SESSION['FBRLH_state'] = $_GET['state'];
+                    }
+                    /*Step 1: Enter Credentials*/
+                    $fb = new \Facebook\Facebook([
+                        'app_id' => '3081918591824631',
+                        'app_secret' => '668af297d9ac4c5c09a8bbf119910932',
+                        'default_graph_version' => 'v2.10',
+                        //'default_access_token' => '{access-token}', // optional
+                    ]);
+                    /*Step 2 Create the url*/
+                    if(empty($access_token)) {
+                        echo "<button class='loginBtn loginBtn--facebook' href='{$fb->getRedirectLoginHelper()->getLoginUrl("http://localhost/twitter/facebook_login.php")}'>Sign In with Facebook</button><br>";
+                    }
+                    /*Step 3 : Get Access Token*/
+                    $access_token = $fb->getRedirectLoginHelper()->getAccessToken();
+                    /*Step 4: Get the graph user*/
+                    if(isset($access_token)) {
+                        try {
+                            $response = $fb->get('/me',$access_token);
+                            $fb_user = $response->getGraphUser();
+                            echo  $fb_user->getName();
+                            
+                            //  var_dump($fb_user);
+                        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
+                            echo  'Graph returned an error: ' . $e->getMessage();
+                        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
+                            // When validation fails or other local issues
+                            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                        }
+                    }
+                ?>
+                <button class="loginBtn loginBtn--google">Sign In with Google</button>
+            </div>
         </div>
         <script>
             var Change = function(button){
                 var login = document.getElementsByClassName("login")[0];
                 var reg = document.getElementsByClassName("reg")[0];
+                var facebook = document.getElementsByClassName("face-google")[0];
                 if(button === 0){
                     login.style.display = "none";
                     reg.style.display = "block";
+                    facebook.style.display = "block";
                 }else{
                     login.style.display = "block";
                     reg.style.display = "none";
+                    facebook.style.display = "none";
                 }
             }
 

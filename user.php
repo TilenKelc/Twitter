@@ -83,6 +83,8 @@
         $stmt->execute();
         $result = $stmt->get_result();
         header("Location: profile.php");
+    }else if(isset($_GET["login"]) && $_GET["login"] === "facebook"){
+
     }else if(isset($_GET["logout"]) && $_GET["logout"] === true){
         session_destroy();
         header("Location: login.php");
