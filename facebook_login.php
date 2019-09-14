@@ -13,7 +13,8 @@
     ]);
     /*Step 2 Create the url*/
     if(empty($access_token)) {
-        echo "<a href='{$fb->getRedirectLoginHelper()->getLoginUrl("http://localhost/twitter/facebook_login.php")}'>Login with Facebook </a>";
+        $permisions = array("email");
+        echo "<a href='{$fb->getRedirectLoginHelper()->getLoginUrl("http://localhost/twitter/facebook_login.php", $permisions)}'>Login with Facebook </a>";
     }
     /*Step 3 : Get Access Token*/
     $access_token = $fb->getRedirectLoginHelper()->getAccessToken();
@@ -23,6 +24,8 @@
             $response = $fb->get('/me',$access_token);
             $fb_user = $response->getGraphUser();
             echo  $fb_user->getName();
+            echo $fb_user->getEmail();
+            echo $fb_user->getProperty("email");
             
             //  var_dump($fb_user);
         } catch (\Facebook\Exceptions\FacebookResponseException $e) {

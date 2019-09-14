@@ -225,7 +225,6 @@ li:hover{
 /* Facebook login // Google login */
 /* Shared */
 .face-google{
-    display: none;
     margin-top: 3%;
     text-align: center;
 }

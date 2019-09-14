@@ -83,7 +83,41 @@
         $stmt->execute();
         $result = $stmt->get_result();
         header("Location: profile.php");
-    }else if(isset($_GET["login"]) && $_GET["login"] === "facebook"){
+
+        //Facebook login
+    }else if(isset($_GET["login"]) && $_GET["login"] === "facebook"){   
+        $user_data = $_SESSION["temp"];
+        $name = $user_data[0];
+        $email = $user_data[1];
+        $password = "facebook";
+
+        //Preveri ce je uporabnik ze registriran
+        $stmt = $link->prepare("SELECT id FROM users WHERE (email=?)");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = mysqli_fetch_array($result);
+        if(mysqli_num_rows($result) > 0)
+        {
+            $_SESSION["user_id"] = $row["id"];
+            header("Location: index.php");
+            
+        }else{
+            $date = date("Y-m-d");
+            $stmt = $link->prepare("INSERT INTO users (username, email, password, joined) VALUES (?,?,?,?);");
+            $stmt->bind_param("ssss", $name, $email, $password, $date);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            $stmt = $link->prepare("SELECT id FROM users WHERE (email=?)");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = mysqli_fetch_array($result);
+            $_SESSION["user_id"] = $row["id"];
+            header("Location: index.php");
+
+        }
 
     }else if(isset($_GET["logout"]) && $_GET["logout"] === true){
         session_destroy();

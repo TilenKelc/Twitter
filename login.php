@@ -44,54 +44,34 @@
                 <!-- Facebook login -->
                 <?php
                     require ("vendor/autoload.php");
-                    if(isset($_GET['state'])) {
-                        $_SESSION['FBRLH_state'] = $_GET['state'];
-                    }
-                    /*Step 1: Enter Credentials*/
-                    $fb = new \Facebook\Facebook([
-                        'app_id' => '3081918591824631',
+                    $fb = new Facebook\Facebook([
+                        'app_id' => '3081918591824631', 
                         'app_secret' => '668af297d9ac4c5c09a8bbf119910932',
-                        'default_graph_version' => 'v2.10',
-                        //'default_access_token' => '{access-token}', // optional
+                        'default_graph_version' => 'v3.2',
                     ]);
-                    /*Step 2 Create the url*/
-                    if(empty($access_token)) {
-                        echo "<button class='loginBtn loginBtn--facebook' href='{$fb->getRedirectLoginHelper()->getLoginUrl("http://localhost/twitter/facebook_login.php")}'>Sign In with Facebook</button><br>";
-                    }
-                    /*Step 3 : Get Access Token*/
-                    $access_token = $fb->getRedirectLoginHelper()->getAccessToken();
-                    /*Step 4: Get the graph user*/
-                    if(isset($access_token)) {
-                        try {
-                            $response = $fb->get('/me',$access_token);
-                            $fb_user = $response->getGraphUser();
-                            echo  $fb_user->getName();
-                            
-                            //  var_dump($fb_user);
-                        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
-                            echo  'Graph returned an error: ' . $e->getMessage();
-                        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
-                            // When validation fails or other local issues
-                            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-                        }
-                    }
+
+                    $helper = $fb->getRedirectLoginHelper();
+
+                    $permissions = ['email'];
+                    $loginUrl = $helper->getLoginUrl('https://localhost/twitter/fb-callback.php', $permissions);
+                    
+                    //echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+                    echo "<button class='loginBtn loginBtn--facebook' onclick='location.href=" . htmlspecialchars($loginUrl) . "'>Sign In with Facebook</button><br>";
                 ?>
-                <button class="loginBtn loginBtn--google">Sign In with Google</button>
+                <button class="loginBtn loginBtn--facebook" onclick="location.href=' . htmlspecialchars($loginUrl) . '">Sign In with Facebook</button><br>
+                <button class="loginBtn loginBtn--google" onclick="location.href='index.php'">Sign In with Google</button>
             </div>
         </div>
         <script>
             var Change = function(button){
                 var login = document.getElementsByClassName("login")[0];
                 var reg = document.getElementsByClassName("reg")[0];
-                var facebook = document.getElementsByClassName("face-google")[0];
                 if(button === 0){
                     login.style.display = "none";
                     reg.style.display = "block";
-                    facebook.style.display = "block";
                 }else{
                     login.style.display = "block";
                     reg.style.display = "none";
-                    facebook.style.display = "none";
                 }
             }
 
