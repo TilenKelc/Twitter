@@ -14,6 +14,10 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <meta name="google-signin-scope" content="profile email">
+        <meta name="google-signin-client_id" content="622226021483-gu8duueds3hoal4anv9dq7busec1bf5d.apps.googleusercontent.com">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
     <body>
         <div class="left-side">
@@ -58,6 +62,23 @@
                     echo '<button class="loginBtn loginBtn--facebook" onclick=location.href="'. htmlspecialchars($loginUrl) .'">Sign In with Facebook</button><br>';
 
                 ?>
+                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      }
+    </script>
                 <button class="loginBtn loginBtn--google" href='index.php'>Sign In with Google</button>
             </div>
         </div>
