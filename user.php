@@ -120,6 +120,7 @@
         }
 
     }else if(isset($_GET["logout"]) && $_GET["logout"] === true){
+        unset($_SESSION["user_id"]);
         session_destroy();
         header("Location: login.php");
     }else {

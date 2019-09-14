@@ -55,11 +55,10 @@
                     $permissions = ['email'];
                     $loginUrl = $helper->getLoginUrl('https://localhost/twitter/fb-callback.php', $permissions);
                     
-                    //echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
-                    echo "<button class='loginBtn loginBtn--facebook' onclick='location.href=" . htmlspecialchars($loginUrl) . "'>Sign In with Facebook</button><br>";
+                    echo '<button class="loginBtn loginBtn--facebook" onclick=location.href="'. htmlspecialchars($loginUrl) .'">Sign In with Facebook</button><br>';
+
                 ?>
-                <button class="loginBtn loginBtn--facebook" onclick="location.href=' . htmlspecialchars($loginUrl) . '">Sign In with Facebook</button><br>
-                <button class="loginBtn loginBtn--google" onclick="location.href='index.php'">Sign In with Google</button>
+                <button class="loginBtn loginBtn--google" href='index.php'>Sign In with Google</button>
             </div>
         </div>
         <script>
