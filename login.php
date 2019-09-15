@@ -8,7 +8,7 @@
     }
 ?>
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
     <head>
         <title>Twitter</title>
         <meta charset="utf-8">
@@ -79,7 +79,7 @@
         console.log("ID Token: " + id_token);
       }
     </script>
-                <button class="loginBtn loginBtn--google" href='index.php'>Sign In with Google</button>
+                <button class="loginBtn loginBtn--google" data-onsuccess="onSignIn">Sign In with Google</button>
             </div>
         </div>
         <script>
