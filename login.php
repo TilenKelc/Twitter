@@ -61,25 +61,23 @@
                     
                     echo '<button class="loginBtn loginBtn--facebook" onclick=location.href="'. htmlspecialchars($loginUrl) .'">Sign In with Facebook</button><br>';
 
-                ?>
-                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-    <script>
-      function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
+                    // Google login
 
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-      }
-    </script>
-                <button class="loginBtn loginBtn--google" data-onsuccess="onSignIn">Sign In with Google</button>
+                    // init configuration
+                    $clientID = '622226021483-gu8duueds3hoal4anv9dq7busec1bf5d.apps.googleusercontent.com';
+                    $clientSecret = 'jYg2DmZUjm6LvIzEJp_lZ0Q5';
+                    $redirectUri = 'https://localhost/twitter/google-callback.php';
+                    
+                    // create Client Request to access Google API
+                    $client = new Google_Client();
+                    $client->setClientId($clientID);
+                    $client->setClientSecret($clientSecret);
+                    $client->setRedirectUri($redirectUri);
+                    $client->addScope("email");
+                    $client->addScope("profile");
+
+                    echo '<button class="loginBtn loginBtn--google" onclick=location.href="'. htmlspecialchars($client->createAuthUrl()) .'">Sign In with Google</button>';
+                ?>
             </div>
         </div>
         <script>
