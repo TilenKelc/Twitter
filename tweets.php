@@ -4,19 +4,18 @@
 
     if(isset($_POST["button"]) && $_POST["button"] === "TWEET"){
         $sql = "INSERT INTO tweets (user_id, ";
-        $check = false;
         $array = array();
 
         if(isset($_POST["tweet"])){
             $tweet = filter_input(INPUT_POST, "tweet",FILTER_SANITIZE_STRING);
-            $check = true;
             array_push($array, $tweet);
-            $sql = $sql + "text";
+            $sql = $sql . "text";
+
         }else if(isset($_POST["file"])){
-            if($check){
-                $sql = $sql + ",picture)";
+            if(isset($_POST["tweet"])){
+                $sql = $sql . ",picture)";
             }else{
-                $sql = $sql + "picture)";
+                $sql = $sql . "picture)";
             }
 
             $picture = filter_input($_POST["file"]);
@@ -54,14 +53,22 @@
 
             array_push($array, $picture);
         }
-        $sql = $sql + " VALUES (?,?,?);";
+        if(isset($_POST["tweet"]) && !isset($_POST["file"])){
+            $sql = $sql . ") VALUES (?,?);";
+            
+        }else{
+            $sql = $sql . " VALUES (?,?,?);";
+        }
+        echo $sql;
         array_push($array, $_SESSION["user_id"]);
+
+        /*
 
         $stmt = $link->prepare($sql);
         $stmt->bind_param('sss', $array[0], $array[1]);
         $stmt->execute();
         $stmt->get_result();
 
-        header("Location: index.php");
+        header("Location: index.php");*/
     }
 ?>

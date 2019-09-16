@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include_once "./database.php";
     if(isset($_SESSION['error'])){
         echo ("<script LANGUAGE='JavaScript'>"
             . "window.alert('".$_SESSION['error']."')"
@@ -46,8 +47,7 @@
                 <div class="avatar"><img src="./img/avatar.png" alt="./img/avatar.png"></div>
                 <form method="POST" action="./tweets.php" enctype="multipart/form-data">
                     <textarea placeholder="What is going on?" class="text" name="tweet"></textarea>
-                    <input type="file" name="file" id="file" class="inputfile">
-                    <label for="file">Image</label>
+                    <input type="file" name="file">
                     <input type="submit" name="button" value="TWEET">
                 </form>
                 <div class="tweets">
@@ -57,6 +57,19 @@
             <div class="sideline">
                 <div class="people">
                     <h2>Who to follow</h2>
+                    <?php
+                        $id = $_SESSION["user_id"];
+                        $sql = "SELECT * FROM users WHERE (id != $id); ";
+                        $result = mysqli_query($link, $sql);
+                        while($row = mysqli_fetch_array($result))
+                        {
+                            //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
+                            echo "<div class='sideline-people'>";
+                                echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
+                                echo  "<p>" . $row["username"] . "</p>";
+                            echo "</div>";
+                        }
+                    ?>
                     <div></div>
                     <div class="footer"></div>
                 </div>  

@@ -114,8 +114,11 @@ li:hover{
     color: #66ccff;
     font-size: 20px;
     border-radius: 5px;
-    float: right;
-    margin-right: 40px;
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    padding: 0;
+    margin: 0;
 }
 .message>form>input[type="submit"]:hover{
     cursor: pointer;
@@ -123,26 +126,6 @@ li:hover{
     background-color: #fff8f7;
 }
 
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-.inputfile + label {
-    font-size: 1.25em;
-    font-weight: 700;
-    color: #66ccff;
-    background-color: white;
-    float: left;
-    width: 10%;
-}
-.inputfile:focus + label,
-.inputfile + label:hover {
-    background-color: #fff8f7;
-}
 /*-----------------------------*/
 .left-side{
     background-color: #66ccff;
@@ -294,3 +277,47 @@ li:hover{
     cursor: pointer;
 }
 
+.sideline>.people>h2{
+    text-align: center;
+}
+.sideline-people{
+    border: 1px solid silver;
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 15px;
+    text-align: center;
+}
+.sideline-people>img{
+    height: 60px;
+    width: 60px;
+    border-radius: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 10px;
+}
+.sideline-people>p{
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.message>form{
+    width: 100%;
+    height: 130px;
+    margin: 0;
+    border-bottom: solid silver 0.5px;
+    position: relative;
+}
+.message>form>input[type="file"]{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+.message>form>input{
+    margin: 0;
+}

@@ -1,13 +1,6 @@
 <?php
     include_once "./database.php";
     session_start();
-    /*//The URL with parameters / query string.
-    $url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=622226021483-gu8duueds3hoal4anv9dq7busec1bf5d.apps.googleusercontent.com&response_type=code&scope=https://www.googleapis.com/auth/gmail.send&redirect_uri=https://localhost/twitter/php/user.php&access_type=offline';
-        
-    //Once again, we use file_get_contents to GET the URL in question.
-    file_get_contents($url);   
-    $code = $_GET["code"];
-    echo $code;*/
 
     // Preveri ce je input registracija
     if(isset($_POST["sub"]) && $_POST["sub"] === "Register"){
