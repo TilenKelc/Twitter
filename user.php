@@ -24,10 +24,15 @@
 
         $pass = password_hash($password, PASSWORD_DEFAULT);
         
-        $stmt = $link->prepare("SELECT email FROM users WHERE (email = ?);");
+        $stmt = $link->prepare("SELECT email, password FROM users WHERE (email = ?);");
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
+        $row = mysqli_fetch_array($result);
+        if($row["password"] == "google" || $row["password"] == "facebook"){
+            $_SESSION['error'] = "This email already exists";
+            header("Location: login.php");
+        }
         
         // Preveri ce email ze obstaja
         if(mysqli_num_rows($result) > 0)
@@ -92,11 +97,16 @@
         $password = "facebook";
 
         //Preveri ce je uporabnik ze registriran
-        $stmt = $link->prepare("SELECT id FROM users WHERE (email=?)");
+        $stmt = $link->prepare("SELECT id, password FROM users WHERE (email=?)");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
+        if($row["password"] != "facebook"){
+            $_SESSION['error'] = "This email already exists";
+            header("Location: login.php");
+        }
+
         if(mysqli_num_rows($result) > 0)
         {
             $_SESSION["user_id"] = $row["id"];
@@ -128,12 +138,16 @@
         $password = "google";
 
         //Preveri ce je uporabnik ze registriran
-        $stmt = $link->prepare("SELECT id FROM users WHERE (email=?)");
+        $stmt = $link->prepare("SELECT id, password FROM users WHERE (email=?)");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
-        echo "sdad";
+        if($row["password"] != "google"){
+            $_SESSION['error'] = "This email already exists";
+            header("Location: login.php");
+        }
+
         if(mysqli_num_rows($result) > 0)
         {
             $_SESSION["user_id"] = $row["id"];
