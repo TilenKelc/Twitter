@@ -70,5 +70,18 @@
             $stmt->get_result();
         }
         header("Location: index.php");
+    }else if(isset($_POST["reply"])){
+        $text = filter_input(INPUT_POST, "reply",FILTER_SANITIZE_STRING);
+        $user_id = $_SESSION["user_id"];
+        $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+        $stmt = $link->prepare("INSERT INTO replies (user_id, reply, tweet_id) VALUES (?,?,?);");
+        $stmt->bind_param('isi', $user_id, $text, $id);
+        $stmt->execute();
+        $stmt->get_result();
+        header("Location: index.php");
+
+    }else{
+        header("Location: index.php");
     }
 ?>

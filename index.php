@@ -52,8 +52,9 @@
                 </form>
                 <?php
                     $id = $_SESSION["user_id"];
-                    $sql = "SELECT t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar FROM tweets t INNER JOIN users u ON t.user_id = u.id;";
+                    $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar FROM tweets t INNER JOIN users u ON t.user_id = u.id;";
                     $result = mysqli_query($link, $sql);
+                    $count = 0;
                     while($row = mysqli_fetch_array($result))
                     {
                         //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
@@ -62,11 +63,16 @@
                             echo  "<div class='time'>" . $row["time"] . "</div>";
                             echo  "<div class='username-tweet'>" . $row["username"] . "</div>";
                             echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
-                            echo  "<p>" . $row["likes"] . "</p>";
+                            echo  "<div class='like-tweet'>" . $row["likes"] . "</div>";
                             if($row["picture"]){
                                 echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   
                             }
+                            echo "<a onclick='Comment(". $count .")' class='comment'> Comment</a>";
+                            echo "<form action='tweets.php?id=". $row["id"] ."' enctype='multipart/form-data' method='POST' class='form-change'>";
+                                echo "<input type='text' placeholder='Your opinion' name='reply'>";
+                            echo "</form>";
                         echo "</div>";
+                        $count++;
                     }
                 ?>
             </div>
@@ -91,36 +97,20 @@
             </div>
         </div>
         <script>
-            var timer = null;
-            $('text').keydown(function(){
-                clearTimeout(timer); 
-                timer = setTimeout(MoreLess, 1000);
-            });
+        
 
-            var MoreLess = function(){
-                var element = document.getElementByClass("text")[0];
-                if(element.clientHeight < element.scrollHeight){
-                    alert("The element has a vertical scrollbar!");
+            var Comment = function(count){
+                var check = document.getElementsByClassName("form-change")[count];
+                var text = document.getElementsByClassName("text-tweet")[count];
+                if(check.style.display == 'block'){
+                    check.style.display = "none";
+                    text.style.marginBottom = "20px";
+                }else{
+                    check.style.display = "block";
+                    text.style.marginBottom = "5px";
                 }
             }
 
-            $('text').live('keydown', function() {
-
-                // scrollbars apreared
-                if (this.clientHeight < this.scrollHeight) {
-
-                    var words = $(this).val().split(' ');
-                    var last_word = words.pop();
-                    var reduced = words.join(' ');
-                    $(this).val(reduced);
-                    $(this).css('height', '65px');
-
-                    $(this).after('<textarea class="text"></textarea>');
-                    $(this).next().focus().val(last_word);
-
-                }
-
-            });
 
         </script>
     </body>

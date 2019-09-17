@@ -339,7 +339,6 @@ li:hover{
     margin-top: 5px;
 }
 .tweets>div{
-    margin: 0;
     padding: 0;
 }
 .image-tweet{
@@ -354,8 +353,51 @@ li:hover{
     margin-top: 5px !important;
 }
 .username-tweet{
-    width: 0%;
+    width: 40%;
     position: absolute;
-    top: 5px;
+    top: 20px;
     left: 80px;
+    font-size: 20px;
+}
+.text-tweet{
+    padding: 5px !important;
+    margin-bottom: 20px;
+}
+.like-tweet{
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+}
+.comment{
+    text-decoration: none;
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    transition: 0.5s;
+    color: black;
+}
+.comment:hover{
+    cursor: pointer;
+    transition: 0.5s;
+    color: grey;
+}
+.form-change{
+    display: none;
+}
+.form-change>input{
+    margin-bottom: 30px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    resize: none; 
+    border-radius: 10px;
+    padding: 5px;
+    height: 40px;
+    border-style: solid;
+    border-color: silver;
+    border-width: 0.5px;
+}
+.form-change>input:focus{
+    outline: none;
 }
