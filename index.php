@@ -50,9 +50,25 @@
                     <input type="file" name="file">
                     <input type="submit" name="button" value="TWEET">
                 </form>
-                <div class="tweets">
-
-                </div>
+                <?php
+                    $id = $_SESSION["user_id"];
+                    $sql = "SELECT t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar FROM tweets t INNER JOIN users u ON t.user_id = u.id;";
+                    $result = mysqli_query($link, $sql);
+                    while($row = mysqli_fetch_array($result))
+                    {
+                        //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
+                        echo "<div class='tweets'>";
+                            echo "<img src='./img/avatar.png' alt='./img/avatar.png' class='profile-tweet'>";
+                            echo  "<div class='time'>" . $row["time"] . "</div>";
+                            echo  "<div class='username-tweet'>" . $row["username"] . "</div>";
+                            echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
+                            echo  "<p>" . $row["likes"] . "</p>";
+                            if($row["picture"]){
+                                echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   
+                            }
+                        echo "</div>";
+                    }
+                ?>
             </div>
             <div class="sideline">
                 <div class="people">
@@ -70,7 +86,6 @@
                             echo "</div>";
                         }
                     ?>
-                    <div></div>
                     <div class="footer"></div>
                 </div>  
             </div>

@@ -24,6 +24,7 @@
                     <li>Bookmarks</li>
                     <li>Lists</li>
                     <li class="active" onclick="location.href='profile.php'">Profile</li>
+                    <li onclick="location.href='user.php?logout=true'">Logout</li>
                     <li>More</li>
                 </ul>
             </div>
@@ -51,11 +52,25 @@
                 </div>
             </div>
             <div class="sideline">
+            <div class="sideline">
                 <div class="people">
                     <h2>Who to follow</h2>
-                    <div></div>
+                    <?php
+                        $id = $_SESSION["user_id"];
+                        $sql = "SELECT * FROM users WHERE (id != $id); ";
+                        $result = mysqli_query($link, $sql);
+                        while($row = mysqli_fetch_array($result))
+                        {
+                            //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
+                            echo "<div class='sideline-people'>";
+                                echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
+                                echo  "<p>" . $row["username"] . "</p>";
+                            echo "</div>";
+                        }
+                    ?>
                     <div class="footer"></div>
                 </div>  
+            </div>
             </div>
         </div>
         <script>

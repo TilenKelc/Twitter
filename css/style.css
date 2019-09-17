@@ -321,3 +321,41 @@ li:hover{
 .message>form>input{
     margin: 0;
 }
+
+.tweets{
+    border: 0.5px solid silver;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    position: relative;
+}
+.profile-tweet{
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+.tweets>div{
+    margin: 0;
+    padding: 0;
+}
+.image-tweet{
+    width: 100% !important;
+    height: 400px !important;
+    margin: 0;
+    padding: 0;
+}
+.time{
+    float: right;
+    margin-right: 10px !important;
+    margin-top: 5px !important;
+}
+.username-tweet{
+    width: 0%;
+    position: absolute;
+    top: 5px;
+    left: 80px;
+}

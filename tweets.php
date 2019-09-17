@@ -3,22 +3,16 @@
     session_start();
 
     if(isset($_POST["button"]) && $_POST["button"] === "TWEET"){
-        $sql = "INSERT INTO tweets (user_id, ";
-        $array = array();
+        $tweet;
+        $picture;
+        $sql;
+        $id = $_SESSION["user_id"];
 
-        if(isset($_POST["tweet"])){
+        if(isset($_POST["tweet"]) && $_POST["tweet"] != ""){
             $tweet = filter_input(INPUT_POST, "tweet",FILTER_SANITIZE_STRING);
-            array_push($array, $tweet);
-            $sql = $sql . "text";
 
-        }else if(isset($_POST["file"])){
-            if(isset($_POST["tweet"])){
-                $sql = $sql . ",picture)";
-            }else{
-                $sql = $sql . "picture)";
-            }
-
-            $picture = filter_input($_POST["file"]);
+        }
+        if($_FILES["file"]["name"]){
             $target_dir = "uploads/";
             $target_file = $target_dir . basename($_FILES["file"]["name"]);
             $uploadOk = 1;
@@ -44,31 +38,37 @@
             } else {
                 if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
                         unset($_SESSION["error"]);
-
-                        header("Location:index.php");
+                        $picture = basename($_FILES["file"]["name"]);
                 } else {
-                        header("Location:dodaj.php");
-                    }
+                    header("Location:index.php");
+                }
             }
-
-            array_push($array, $picture);
         }
-        if(isset($_POST["tweet"]) && !isset($_POST["file"])){
-            $sql = $sql . ") VALUES (?,?);";
-            
-        }else{
-            $sql = $sql . " VALUES (?,?,?);";
+
+        if(isset($tweet) && isset($picture)){
+            $sql = "INSERT INTO tweets (user_id, text, picture) VALUES (?,?,?);";
+
+            $stmt = $link->prepare($sql);
+            $stmt->bind_param('sss', $id, $tweet, $picture);
+            $stmt->execute();
+            $stmt->get_result();
+
+        }else if(isset($tweet) && !isset($picture)){
+            $sql = "INSERT INTO tweets (user_id, text) VALUES (?,?);";
+
+            $stmt = $link->prepare($sql);
+            $stmt->bind_param('ss', $id, $tweet);
+            $stmt->execute();
+            $stmt->get_result();
+
+        }else if(!isset($tweet) && isset($picture)){
+            $sql = "INSERT INTO tweets (user_id, picture) VALUES (?,?);";
+
+            $stmt = $link->prepare($sql);
+            $stmt->bind_param('ss', $id,$picture);
+            $stmt->execute();
+            $stmt->get_result();
         }
-        echo $sql;
-        array_push($array, $_SESSION["user_id"]);
-
-        /*
-
-        $stmt = $link->prepare($sql);
-        $stmt->bind_param('sss', $array[0], $array[1]);
-        $stmt->execute();
-        $stmt->get_result();
-
-        header("Location: index.php");*/
+        header("Location: index.php");
     }
 ?>

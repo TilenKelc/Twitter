@@ -103,6 +103,7 @@
         if(mysqli_num_rows($result) > 0)
         {
             $_SESSION["user_id"] = $row["id"];
+            unset($_SESSION["error"]);
             unset($_SESSION["temp"]);
             header("Location: index.php");
             
@@ -119,6 +120,7 @@
             $result = $stmt->get_result();
             $row = mysqli_fetch_array($result);
             $_SESSION["user_id"] = $row["id"];
+            unset($_SESSION["error"]); 
             unset($_SESSION["temp"]);
             header("Location: index.php");
 
@@ -145,6 +147,7 @@
         {
             $_SESSION["user_id"] = $row["id"];
             unset($_SESSION["temp"]);
+            unset($_SESSION["error"]);
             header("Location: index.php");
             
         }else{
@@ -160,6 +163,7 @@
             $result = $stmt->get_result();
             $row = mysqli_fetch_array($result);
             $_SESSION["user_id"] = $row["id"];
+            unset($_SESSION["error"]);
             unset($_SESSION["temp"]);
             header("Location: index.php");
         }
