@@ -70,7 +70,7 @@
                             echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
                             echo  "<div class='like-tweet'>" . $row["likes"] . "</div>";
                                 if($row["like_id"] == $_SESSION["user_id"]){
-                                    echo  "<div onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."' class='like-already'>Like</div>";
+                                    echo  "<div onclick=location.href='tweets.php?like=false&post_id=". $row["id"] ."' class='like-already'>Like</div>";
                                 }else{
                                     echo  "<div class='like' onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."'>Like</div>";
                                 }
@@ -119,8 +119,6 @@
             </div>
         </div>
         <script>
-        
-
             var Comment = function(count){
                 var text = document.getElementsByClassName("text-tweet")[count];
                 var check = document.getElementsByClassName("form-change")[count];
@@ -135,8 +133,6 @@
                     check.style.display = "block";
                 }
             }
-
-
         </script>
     </body>
 </html>

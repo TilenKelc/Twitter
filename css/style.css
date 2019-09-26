@@ -378,7 +378,7 @@ li:hover{
     transition: 0.5s;
     color: black;
 }
-.comment:hover, .like:hover{
+.comment:hover, .like:hover, .like-already:hover{
     cursor: pointer;
     transition: 0.5s;
     color: grey;

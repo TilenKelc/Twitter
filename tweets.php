@@ -113,6 +113,36 @@
             header("Location: index.php");
         }
 
+    }else if(isset($_GET["like"]) && $_GET["like"] == "false"){
+        $user_id = $_SESSION["user_id"];
+        
+        // Preveri ce je id stevilka
+        if (filter_input(INPUT_GET, "post_id", FILTER_VALIDATE_INT)){
+            $post_id = filter_input(INPUT_GET, "post_id");
+
+            // Pogleda trenutno st likov
+            $stmt = $link->prepare("SELECT COUNT(likes) as likes FROM tweets WHERE id=?;");
+            $stmt->bind_param('i', $post_id);
+            $stmt->execute();
+            $stmt->get_result();
+            $result = $stmt->get_result();
+            $row = mysqli_fetch_array($result);
+
+            $count = $row["likes"];
+            $count--;
+            $null = 0;
+
+            $stmt = $link->prepare("UPDATE tweets SET likes = ?, like_id = ? WHERE id =?");
+            $stmt->bind_param('iii', $count, $null, $post_id);
+            $stmt->execute();
+            $stmt->get_result();
+
+            header("Location: index.php");
+
+        } else {
+            header("Location: index.php");
+        }
+
     }else{
         header("Location: index.php");
     }
