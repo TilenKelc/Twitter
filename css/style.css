@@ -325,7 +325,7 @@ li:hover{
 }
 
 .tweets{
-    border: 0.5px solid silver;
+    border: 2px solid silver;
     width: 95%;
     margin-left: auto;
     margin-right: auto;
@@ -378,16 +378,17 @@ li:hover{
     transition: 0.5s;
     color: black;
 }
-.comment:hover{
+.comment:hover, .like:hover{
     cursor: pointer;
     transition: 0.5s;
     color: grey;
 }
 .form-change{
     display: none;
+    border-top: 1px solid silver;
+    margin: 0;
 }
 .form-change>input{
-    margin-bottom: 30px;
     width: 95%;
     margin-left: auto;
     margin-right: auto;
@@ -399,7 +400,45 @@ li:hover{
     border-style: solid;
     border-color: silver;
     border-width: 0.5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 .form-change>input:focus{
     outline: none;
+}
+.like{
+    position: absolute;
+    bottom: 5px;
+    left: 30px;
+}
+.like-already{
+    color: #66ccff;
+    position: absolute;
+    bottom: 5px;
+    left: 30px;
+}
+.replies{
+    display: none;
+    width: 100%;
+    margin-bottom: 30px;    
+}
+.reply{
+    border-top: 0.5px solid silver;
+    width: 100%;
+}
+.reply:last-of-type{
+    border-bottom: 0.5px solid silver;
+}
+.username-replie{
+    width: 40%;
+    float: left;
+}
+.date-replie{
+    float: right;
+    width: 59%;
+    text-align: right;
+}
+.text-reply{
+    width: 100%;
+    padding: 5px;
 }

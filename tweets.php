@@ -8,11 +8,13 @@
         $sql;
         $id = $_SESSION["user_id"];
 
+        // Preveri ali je samo text ali samo slika ali oboje
         if(isset($_POST["tweet"]) && $_POST["tweet"] != ""){
             $tweet = filter_input(INPUT_POST, "tweet",FILTER_SANITIZE_STRING);
 
         }
         if($_FILES["file"]["name"]){
+            // Sliko preveri ce je pravi format, prevelika, ali pa ni slika ter jo shrani
             $target_dir = "uploads/";
             $target_file = $target_dir . basename($_FILES["file"]["name"]);
             $uploadOk = 1;
@@ -44,7 +46,7 @@
                 }
             }
         }
-
+        // Sql kombinirani stavki
         if(isset($tweet) && isset($picture)){
             $sql = "INSERT INTO tweets (user_id, text, picture) VALUES (?,?,?);";
 
@@ -70,6 +72,7 @@
             $stmt->get_result();
         }
         header("Location: index.php");
+        //Prejme reply in ga vstavi v bazo
     }else if(isset($_POST["reply"])){
         $text = filter_input(INPUT_POST, "reply",FILTER_SANITIZE_STRING);
         $user_id = $_SESSION["user_id"];
@@ -80,6 +83,35 @@
         $stmt->execute();
         $stmt->get_result();
         header("Location: index.php");
+
+    }else if(isset($_GET["like"]) && $_GET["like"] == "true"){
+        $user_id = $_SESSION["user_id"];
+        
+        // Preveri ce je id stevilka
+        if (filter_input(INPUT_GET, "post_id", FILTER_VALIDATE_INT)){
+            $post_id = filter_input(INPUT_GET, "post_id");
+
+            // Pogleda trenutno st likov
+            $stmt = $link->prepare("SELECT COUNT(likes) as likes FROM tweets WHERE id=?;");
+            $stmt->bind_param('i', $post_id);
+            $stmt->execute();
+            $stmt->get_result();
+            $result = $stmt->get_result();
+            $row = mysqli_fetch_array($result);
+
+            $count = $row["likes"];
+            $count++;
+
+            $stmt = $link->prepare("UPDATE tweets SET likes = ?, like_id = ? WHERE id =?");
+            $stmt->bind_param('iii', $count, $user_id, $post_id);
+            $stmt->execute();
+            $stmt->get_result();
+
+            header("Location: index.php");
+
+        } else {
+            header("Location: index.php");
+        }
 
     }else{
         header("Location: index.php");

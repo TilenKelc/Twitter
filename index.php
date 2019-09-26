@@ -58,18 +58,22 @@
                 </form>
                 <?php
                     $id = $_SESSION["user_id"];
-                    $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar FROM tweets t INNER JOIN users u ON t.user_id = u.id;";
+                    $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar FROM tweets t INNER JOIN users u ON t.user_id = u.id";
                     $result = mysqli_query($link, $sql);
                     $count = 0;
                     while($row = mysqli_fetch_array($result))
                     {
-                        //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
                         echo "<div class='tweets'>";
                             echo "<img src='./img/avatar.png' alt='./img/avatar.png' class='profile-tweet'>";
                             echo  "<div class='time'>" . $row["time"] . "</div>";
                             echo  "<div class='username-tweet'>" . $row["username"] . "</div>";
                             echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
                             echo  "<div class='like-tweet'>" . $row["likes"] . "</div>";
+                                if($row["like_id"] == $_SESSION["user_id"]){
+                                    echo  "<div onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."' class='like-already'>Like</div>";
+                                }else{
+                                    echo  "<div class='like' onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."'>Like</div>";
+                                }
                             if($row["picture"]){
                                 echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   
                             }
@@ -77,6 +81,19 @@
                             echo "<form action='tweets.php?id=". $row["id"] ."' enctype='multipart/form-data' method='POST' class='form-change'>";
                                 echo "<input type='text' placeholder='Your opinion' name='reply'>";
                             echo "</form>";
+
+                            echo "<div class='replies'>";
+                                $sqlReplies = "SELECT u.username, r.reply, r.date FROM tweets t INNER JOIN replies r ON r.tweet_id = t.id INNER JOIN users u ON u.id=r.user_id WHERE t.id = '". $row["id"]. "'";
+                                $resultReplies = mysqli_query($link, $sqlReplies);
+                                while($row = mysqli_fetch_array($resultReplies))
+                                {
+                                    echo "<div class='reply'>";
+                                        echo "<div class='username-replie'>". $row["username"]. "</div>";
+                                        echo "<div class='date-replie'>". $row["date"] ."</div>";
+                                        echo "<div class='text-reply'>". $row["reply"]. "</div>";
+                                    echo "</div>"; 
+                                }
+                            echo "</div>";
                         echo "</div>";
                         $count++;
                     }
@@ -91,7 +108,6 @@
                         $result = mysqli_query($link, $sql);
                         while($row = mysqli_fetch_array($result))
                         {
-                            //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
                             echo "<div class='sideline-people'>";
                                 echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
                                 echo  "<p>" . $row["username"] . "</p>";
@@ -106,14 +122,17 @@
         
 
             var Comment = function(count){
-                var check = document.getElementsByClassName("form-change")[count];
                 var text = document.getElementsByClassName("text-tweet")[count];
+                var check = document.getElementsByClassName("form-change")[count];
+                var replies = document.getElementsByClassName("replies")[count];
                 if(check.style.display == 'block'){
-                    check.style.display = "none";
+                    replies.style.display = "none";
                     text.style.marginBottom = "20px";
+                    check.style.display = "none";
                 }else{
-                    check.style.display = "block";
+                    replies.style.display = "block";
                     text.style.marginBottom = "5px";
+                    check.style.display = "block";
                 }
             }
 
