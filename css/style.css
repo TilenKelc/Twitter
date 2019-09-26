@@ -442,3 +442,33 @@ li:hover{
     width: 100%;
     padding: 5px;
 }
+
+.upload-image{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+.btn {
+    border: 1px solid #66ccff;
+    color: #66ccff;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    width: 100px;
+    height: 40px;
+}
+.upload-image:hover{
+    cursor: pointer;
+}
+.upload-btn-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100px !important;
+    height: 40px !important;
+}

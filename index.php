@@ -53,7 +53,13 @@
                 <div class="avatar"><img src="./img/avatar.png" alt="./img/avatar.png"></div>
                 <form method="POST" action="./tweets.php" enctype="multipart/form-data">
                     <textarea placeholder="What is going on?" class="text" name="tweet"></textarea>
-                    <input type="file" name="file">
+                    <div class='upload-image'>
+                        <div class="upload-btn-wrapper">
+                            <button class="btn">Image</button>
+                            <input type="file" name="file">
+                        </div>
+                    <!--<input type="file" name="file">-->
+                    </div>
                     <input type="submit" name="button" value="TWEET">
                 </form>
                 <?php
