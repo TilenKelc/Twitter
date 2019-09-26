@@ -22,10 +22,6 @@
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
-        if($row["password"] == "google" || $row["password"] == "facebook"){
-            $_SESSION['error'] = "This email already exists";
-            header("Location: login.php");
-        }
         
         // Preveri ce email ze obstaja
         if(mysqli_num_rows($result) > 0)
@@ -50,17 +46,17 @@
         $pass = filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING);
 
         //Izbere ce uporabnik obstaja
-        $stmt = $link->prepare('SELECT * FROM users WHERE (email = ?);');
+        $stmt = $link->prepare("SELECT u.id, t.user_type, u.password FROM users u INNER JOIN types t ON u.type_id=t.id WHERE (email = ?)");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
         //Preveri ce je povezava kaj vrnila
-        if(mysqli_num_rows($result)==1)
+        if(mysqli_num_rows($result) == 1)
         {
             if (password_verify($pass, $row['password'])) {
                 $_SESSION['user_id'] = $row['id'];        
-                $_SESSION['user_type'] = $row['type_id'];        
+                $_SESSION['user_type'] = $row['user_type'];        
                 header("Location: index.php");
             }
         }
@@ -90,22 +86,25 @@
         $password = "facebook";
 
         //Preveri ce je uporabnik ze registriran
-        $stmt = $link->prepare("SELECT id, password FROM users WHERE (email=?)");
+        $stmt = $link->prepare("SELECT u.id, t.user_type, u.password FROM users u INNER JOIN types t ON u.type_id=t.id WHERE (email = ?)");
+        
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
-        if($row["password"] != "facebook"){
-            $_SESSION['error'] = "This email already exists";
-            header("Location: login.php");
-        }
 
         if(mysqli_num_rows($result) > 0)
         {
-            $_SESSION["user_id"] = $row["id"];
-            unset($_SESSION["error"]);
-            unset($_SESSION["temp"]);
-            header("Location: index.php");
+            if($row["password"] == "facebook"){
+                $_SESSION["user_id"] = $row["id"];
+                $_SESSION['user_type'] = $row['user_type'];        
+                unset($_SESSION["error"]);
+                unset($_SESSION["temp"]);
+                header("Location: index.php");
+            }else{
+                $_SESSION['error'] = "This email already exists";
+                header("Location: login.php");
+            }
             
         }else{
             $date = date("Y-m-d");
@@ -133,23 +132,25 @@
         $password = "google";
 
         //Preveri ce je uporabnik ze registriran
-        $stmt = $link->prepare("SELECT id, password FROM users WHERE (email=?)");
+        $stmt = $link->prepare("SELECT u.id, t.user_type, u.password FROM users u INNER JOIN types t ON u.type_id=t.id WHERE (email = ?)");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = mysqli_fetch_array($result);
-        if($row["password"] != "google"){
-            $_SESSION['error'] = "This email already exists";
-            header("Location: login.php");
-        }
 
         if(mysqli_num_rows($result) > 0)
         {
-            $_SESSION["user_id"] = $row["id"];
-            unset($_SESSION["temp"]);
-            unset($_SESSION["error"]);
-            header("Location: index.php");
-            
+            if($row["password"] == "google"){
+                $_SESSION["user_id"] = $row["id"];
+                $_SESSION['user_type'] = $row['user_type'];        
+                unset($_SESSION["temp"]);
+                unset($_SESSION["error"]);
+                header("Location: index.php");
+            }else{
+                $_SESSION['error'] = "This email already exists";
+                header("Location: login.php");
+            }
+
         }else{
             $date = date("Y-m-d");
             $stmt = $link->prepare("INSERT INTO users (username, email, password, joined) VALUES (?,?,?,?);");

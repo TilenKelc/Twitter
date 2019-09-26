@@ -38,6 +38,12 @@
                     <li>Bookmarks</li>
                     <li>Lists</li>
                     <li onclick="location.href='profile.php'">Profile</li>
+                    <?php
+                        
+                        if($_SESSION["user_type"] == "Administrator"){
+                            echo "<li onclick=location.href='admin-page.php'>Admin page</li>";
+                        }
+                    ?>
                     <li onclick="location.href='user.php?logout=true'">Logout</li>
                     <li>More</li>
                 </ul>

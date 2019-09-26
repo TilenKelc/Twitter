@@ -24,6 +24,12 @@
                     <li>Bookmarks</li>
                     <li>Lists</li>
                     <li class="active" onclick="location.href='profile.php'">Profile</li>
+                    <?php
+                        
+                        if($_SESSION["user_type"] == "Administrator"){
+                            echo "<li onclick=location.href='admin-page.php'>Admin page</li>";
+                        }
+                    ?>
                     <li onclick="location.href='user.php?logout=true'">Logout</li>
                     <li>More</li>
                 </ul>
@@ -52,7 +58,6 @@
                 </div>
             </div>
             <div class="sideline">
-            <div class="sideline">
                 <div class="people">
                     <h2>Who to follow</h2>
                     <?php
@@ -70,7 +75,6 @@
                     ?>
                     <div class="footer"></div>
                 </div>  
-            </div>
             </div>
         </div>
         <script>
