@@ -44,17 +44,14 @@
                         $sql = "SELECT * FROM users WHERE (id = $id);";
                         $result = $link->query($sql);
                         while($row = $result->fetch_assoc()) {
-                            echo "<input type='text' name='username' placeholder='Username' value='". $row["username"] ."' required>";
-                            echo "<textarea placeholder='Bio' class='text' name='bio'>". $row["bio"] ."</textarea>";
-                            echo "<input type='text' name='location' placeholder='Location' value='". $row["location"] ."'>";
-                            echo "<input type='date' name='born' value='". $row["born"] ."'>";
+                            echo "<input type='text' name='username' placeholder='Username' value='". $row["username"] ."' required><br>";
+                            echo "<textarea placeholder='Bio' class='text' name='bio'>". $row["bio"] ."</textarea><br>";
+                            echo "<input type='text' name='location' placeholder='Location' value='". $row["location"] ."'><br>";
+                            echo "<input type='date' name='born' value='". $row["born"] ."'><br>";
                         }
                     ?>
                     <input type="submit" name="sub" value="Edit">
                 </form>
-                <div class="tweets">
-
-                </div>
             </div>
             <div class="sideline">
                 <div class="people">
@@ -67,7 +64,25 @@
                         {
                             echo "<div class='sideline-people'>";
                                 echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
-                                echo  "<p>" . $row["username"] . "</p>";
+                                echo "<p>" . $row["username"] . "</p>";
+
+                                $sqlFriends = "SELECT * FROM friends WHERE (user_id = $id) AND (friend_id = ". $row["id"] .");";
+                                $resultFriends = mysqli_query($link, $sqlFriends);
+                                $rowFriends = mysqli_fetch_array($resultFriends);
+
+                                if($rowFriends["state"] == "1 Following 2" || $rowFriends["state"] == "Both"){
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
+                                }else{
+                                    $sqlFriends = "SELECT * FROM friends WHERE (friend_id = $id) AND (user_id = ". $row["id"] .");";
+                                    $resultFriends = mysqli_query($link, $sqlFriends);
+                                    $rowFriends = mysqli_fetch_array($resultFriends);
+
+                                    if($rowFriends["state"] == "Both"){
+                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
+                                    }else{
+                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
+                                    }
+                                }
                             echo "</div>";
                         }
                     ?>
