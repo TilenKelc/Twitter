@@ -378,10 +378,33 @@ li:hover{
     transition: 0.5s;
     color: black;
 }
-.comment:hover, .like:hover, .like-already:hover{
+.comment:hover, .like:hover, .like-already:hover, .report:hover, .pardon:hover{
     cursor: pointer;
     transition: 0.5s;
     color: grey;
+}
+.report{
+    position: absolute;
+    bottom: 5px;
+    right: 100px;
+    color: black;
+    transition: 0.5s;
+}
+.pardon{
+    position: absolute;
+    bottom: 5px;
+    right: 170px;
+    color: black;
+    transition: 0.5s;
+}
+.reports{
+    text-align: center;
+    margin-top: 50px;
+    font-size: 25px;
+    color: black;
+}
+h2{
+    color: #66ccff;
 }
 .form-change{
     display: none;

@@ -83,7 +83,8 @@
                             if($row["picture"]){
                                 echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   
                             }
-                            echo "<a onclick='Comment(". $count .")' class='comment'> Comment</a>";
+                            echo "<a onclick=location.href='tweets.php?action=report&id=". $row["id"] ."' class='report'>Report</a>";
+                            echo "<a onclick='Comment(". $count .")' class='comment'>Comment</a>";
                             echo "<form action='tweets.php?id=". $row["id"] ."' enctype='multipart/form-data' method='POST' class='form-change'>";
                                 echo "<input type='text' placeholder='Your opinion' name='reply'>";
                             echo "</form>";

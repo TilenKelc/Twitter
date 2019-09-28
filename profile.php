@@ -50,7 +50,6 @@
                             echo "<input type='date' name='born' value='". $row["born"] ."'>";
                         }
                     ?>
-                    <!-- samozeleznik-->
                     <input type="submit" name="sub" value="Edit">
                 </form>
                 <div class="tweets">
@@ -66,7 +65,6 @@
                         $result = mysqli_query($link, $sql);
                         while($row = mysqli_fetch_array($result))
                         {
-                            //echo "<div class='' onclick=window.location.href='prikaz_zivali.php?id=".$row['id']."'>";
                             echo "<div class='sideline-people'>";
                                 echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
                                 echo  "<p>" . $row["username"] . "</p>";
