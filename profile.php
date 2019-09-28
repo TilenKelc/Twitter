@@ -31,12 +31,10 @@
                         }
                     ?>
                     <li onclick="location.href='user.php?logout=true'">Logout</li>
-                    <li>More</li>
                 </ul>
             </div>
             <div class="message">
                 <h2>Home</h2>
-                <div class="avatar-profile"><img src="./img/avatar.png" alt="./img/avatar.png"></div>
                 <form method="POST" action="./user.php" enctype="multipart/form-data" class="profile">
                     <?php
                         // Izbere uporabnikove podatke
@@ -44,6 +42,17 @@
                         $sql = "SELECT * FROM users WHERE (id = $id);";
                         $result = $link->query($sql);
                         while($row = $result->fetch_assoc()) {
+                            if(isset($row["avatar"])){
+                                echo "<div class='avatar-profile'><img src='./uploads-profile/". $row["avatar"] ."' alt='./img/avatar.png'></div>";
+                            }else{
+                                echo "<div class='avatar-profile'><img src='./img/avatar.png' alt='./img/avatar.png'></div>";
+                            }
+                                echo "<div class='upload-image-profile'>";
+                                    echo "<div class='upload-btn-wrapper-profile'>";
+                                        echo "<button class='btn-profile'>Image</button>";
+                                        echo "<input type='file' name='file'>";
+                                    echo "</div>";
+                                echo "</div>";
                             echo "<input type='text' name='username' placeholder='Username' value='". $row["username"] ."' required><br>";
                             echo "<textarea placeholder='Bio' class='text' name='bio'>". $row["bio"] ."</textarea><br>";
                             echo "<input type='text' name='location' placeholder='Location' value='". $row["location"] ."'><br>";
@@ -66,22 +75,13 @@
                                 echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
                                 echo "<p>" . $row["username"] . "</p>";
 
-                                $sqlFriends = "SELECT * FROM friends WHERE (user_id = $id) AND (friend_id = ". $row["id"] .");";
+                                $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
                                 $resultFriends = mysqli_query($link, $sqlFriends);
-                                $rowFriends = mysqli_fetch_array($resultFriends);
 
-                                if($rowFriends["state"] == "1 Following 2" || $rowFriends["state"] == "Both"){
+                                if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
                                 }else{
-                                    $sqlFriends = "SELECT * FROM friends WHERE (friend_id = $id) AND (user_id = ". $row["id"] .");";
-                                    $resultFriends = mysqli_query($link, $sqlFriends);
-                                    $rowFriends = mysqli_fetch_array($resultFriends);
-
-                                    if($rowFriends["state"] == "Both"){
-                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
-                                    }else{
-                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
-                                    }
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
                                 }
                             echo "</div>";
                         }

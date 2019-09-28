@@ -45,7 +45,6 @@
                         }
                     ?>
                     <li onclick="location.href='user.php?logout=true'">Logout</li>
-                    <li>More</li>
                 </ul>
             </div>
             <div class="message">
@@ -111,22 +110,13 @@
                                 echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
                                 echo "<p>" . $row["username"] . "</p>";
 
-                                $sqlFriends = "SELECT * FROM friends WHERE (user_id = $id) AND (friend_id = ". $row["id"] .");";
+                                $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
                                 $resultFriends = mysqli_query($link, $sqlFriends);
-                                $rowFriends = mysqli_fetch_array($resultFriends);
 
-                                if($rowFriends["state"] == "1 Following 2" || $rowFriends["state"] == "Both"){
+                                if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
                                 }else{
-                                    $sqlFriends = "SELECT * FROM friends WHERE (friend_id = $id) AND (user_id = ". $row["id"] .");";
-                                    $resultFriends = mysqli_query($link, $sqlFriends);
-                                    $rowFriends = mysqli_fetch_array($resultFriends);
-
-                                    if($rowFriends["state"] == "Both"){
-                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
-                                    }else{
-                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
-                                    }
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
                                 }
                             echo "</div>";
                         }

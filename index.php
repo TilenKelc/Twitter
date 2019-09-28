@@ -45,12 +45,21 @@
                         }
                     ?>
                     <li onclick="location.href='user.php?logout=true'">Logout</li>
-                    <li>More</li>
                 </ul>
             </div>
             <div class="message">
                 <h2>Home</h2>
-                <div class="avatar"><img src="./img/avatar.png" alt="./img/avatar.png"></div>
+                <?php
+                    $id =$_SESSION["user_id"];
+                    $sql = "SELECT avatar FROM users WHERE (id = $id);";
+                    $result = $link->query($sql);
+                    $row = $result->fetch_assoc();
+                    if(isset($row["avatar"])){
+                        echo "<div class='avatar'><img src='./uploads-profile/". $row["avatar"] ."' alt='./img/avatar.png'></div>";
+                    }else{
+                        echo "<div class='avatar'><img src='./img/avatar.png' alt='./img/avatar.png'></div>";
+                    }
+                ?>
                 <form method="POST" action="./tweets.php" enctype="multipart/form-data">
                     <textarea placeholder="What is going on?" class="text" name="tweet"></textarea>
                     <div class='upload-image'>
@@ -58,7 +67,6 @@
                             <button class="btn">Image</button>
                             <input type="file" name="file">
                         </div>
-                    <!--<input type="file" name="file">-->
                     </div>
                     <input type="submit" name="button" value="TWEET">
                 </form>
@@ -70,7 +78,11 @@
                     while($row = mysqli_fetch_array($result))
                     {
                         echo "<div class='tweets'>";
-                            echo "<img src='./img/avatar.png' alt='./img/avatar.png' class='profile-tweet'>";
+                            if(isset($row["avatar"])){
+                                echo "<img src='./uploads-profile/". $row["avatar"] ."' class='profile-tweet'>";
+                            }else{
+                                echo "<img src='./img/avatar.png' class='profile-tweet'>";
+                            }
                             echo  "<div class='time'>" . $row["time"] . "</div>";
                             echo  "<div class='username-tweet'>" . $row["username"] . "</div>";
                             echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
@@ -119,22 +131,13 @@
                                 echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
                                 echo "<p>" . $row["username"] . "</p>";
 
-                                $sqlFriends = "SELECT * FROM friends WHERE (user_id = $id) AND (friend_id = ". $row["id"] .");";
+                                $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
                                 $resultFriends = mysqli_query($link, $sqlFriends);
-                                $rowFriends = mysqli_fetch_array($resultFriends);
 
-                                if($rowFriends["state"] == "1 Following 2" || $rowFriends["state"] == "Both"){
+                                if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
                                 }else{
-                                    $sqlFriends = "SELECT * FROM friends WHERE (friend_id = $id) AND (user_id = ". $row["id"] .");";
-                                    $resultFriends = mysqli_query($link, $sqlFriends);
-                                    $rowFriends = mysqli_fetch_array($resultFriends);
-
-                                    if($rowFriends["state"] == "Both"){
-                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
-                                    }else{
-                                        echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
-                                    }
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
                                 }
                             echo "</div>";
                         }

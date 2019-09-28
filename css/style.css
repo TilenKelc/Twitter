@@ -535,6 +535,38 @@ h2{
     width: 100px !important;
     height: 40px !important;
 }
+.upload-btn-wrapper-profile input[type=file] {
+    position: absolute;
+    left: 25%;
+    top: 0;
+    opacity: 0;
+    width: 50%;
+    height: 40px !important;
+}
+.upload-btn-wrapper-profile input[type=file]:hover {
+    cursor: pointer;
+}
+.upload-btn-wrapper-profile{
+    position: relative;
+    left: 0;
+    top: 0;
+}
+.btn-profile{
+    border: 1px solid #66ccff;
+    color: #66ccff;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    width: 50%;
+    height: 40px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+.upload-image-profile{
+    display: block;
+}
 
 .follow{
     width: 100px;

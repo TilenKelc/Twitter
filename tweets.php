@@ -143,49 +143,6 @@
             header("Location: index.php");
         }
 
-    }else if(isset($_GET["action"]) && $_GET["action"] === "follow"){
-        // Preveri ce je id stevilka
-        if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
-            $friend_id = filter_input(INPUT_GET, "id");
-
-            $stmt = $link->prepare("SELECT id,state FROM friends WHERE (user_id=?) AND (friend_id=?);");
-            $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = mysqli_fetch_array($result);
-
-            // Preveri ce ze imata povezavo
-
-            if(mysqli_num_rows($result) == 0){
-                // Preveri ce je drug uporabnik kliknil na follow in mu nekdo ze sledi
-                $stmt = $link->prepare("SELECT state, id FROM friends WHERE (friend_id=?) AND (user_id= ?);");
-                $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $row = mysqli_fetch_array($result);
-
-                if($row["state"] == "1 Following 2"){
-                    $temp = "Both";
-                    $stmt = $link->prepare("UPDATE friends SET state = ? WHERE (id = ?);");
-                    $stmt->bind_param('si', $temp, $row["id"]);
-                    $stmt->execute();
-                    $stmt->get_result();
-                }else if(mysqli_num_rows($result) == 0){
-                    $temp = "1 Following 2";
-                    $stmt = $link->prepare("INSERT INTO friends (user_id, state, friend_id) VALUES (?,?,?)");
-                    $stmt->bind_param('isi', $_SESSION["user_id"], $temp, $friend_id);
-                    $stmt->execute();
-                    $stmt->get_result();
-                }
-            }
-
-            header("Location: index.php");
-
-        } else {
-            header("Location: index.php");
-        }
-
-        //Preveri ce je bil kliknjen report
     }else if(isset($_GET["action"]) && $_GET["action"] === "report"){
         // Preveri ce je id stevilka
         if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
@@ -214,66 +171,6 @@
         }
 
         //Preveri ce je bil kliknjen unfollow
-    }else if(isset($_GET["action"]) && $_GET["action"] === "unfollow"){
-        // Preveri ce je id stevilka
-        /*if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
-            $friend_id = filter_input(INPUT_GET, "id");
-
-            $stmt = $link->prepare("SELECT id,state FROM friends WHERE (user_id=?) AND (friend_id=?);");
-            $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = mysqli_fetch_array($result);
-
-            // Preveri ce ze imata povezavo
-            if(mysqli_num_rows($result) > 0){
-                if($row["state"] == "Both"){
-                    // Preveri ce uporabnik noce vec slediti
-                    $temp = "2 Following 1";
-                    $stmt = $link->prepare("UPDATE friends SET state = ? WHERE id=?);");
-                    $stmt->bind_param('ii', $temp, $row["id"]);
-                    $stmt->execute();
-                    $result = $stmt->get_result();    
-                }else if($row[""])
-            }else{
-                $stmt = $link->prepare("SELECT state, id FROM friends WHERE (friend_id=?) AND (user_id= ?);");
-                $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $row = mysqli_fetch_array($result);
-
-                if($row["state"] == "Both"){
-                    // Preveri ce uporabnik noce vec slediti
-                    $temp = "2 Following 1";
-                    $stmt = $link->prepare("UPDATE friends SET state = ? WHERE (id=?);");
-                    $stmt->bind_param('si', $temp, $row["id"]);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-    
-    
-                }
-            }*/
-            /*if($row["state"] == "1 Following 2"){
-                $temp = "Both";
-                $stmt = $link->prepare("UPDATE friends SET state = ? WHERE (id = ?);");
-                $stmt->bind_param('si', $temp, $row["id"]);
-                $stmt->execute();
-                $stmt->get_result();
-            }else if(mysqli_num_rows($result) == 0){
-                $temp = "1 Following 2";
-                $stmt = $link->prepare("INSERT INTO friends (user_id, state, friend_id) VALUES (?,?,?)");
-                $stmt->bind_param('isi', $_SESSION["user_id"], $temp, $friend_id);
-                $stmt->execute();
-                $stmt->get_result();
-            }*/
-/*
-           header("Location: index.php");
-
-        } else {
-            header("Location: index.php");
-        }
-*/
-        //Preveri ce je bil kliknjen delete
     }else if(isset($_GET["action"]) && $_GET["action"] === "delete"){
         // Preveri ce je id stevilka
         if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){

@@ -70,10 +70,45 @@
         $bio = filter_input(INPUT_POST, "bio",FILTER_SANITIZE_STRING);
         $born = filter_input(INPUT_POST, "born");
         $id = $_SESSION["user_id"];
+        $picture = null;
+
+        if($_FILES["file"]["name"]){
+            // Sliko preveri ce je pravi format, prevelika, ali pa ni slika ter jo shrani
+            $target_dir = "uploads-profile/";
+            $target_file = $target_dir . basename($_FILES["file"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+            $check = getimagesize($_FILES["file"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $_SESSION['error'] = "The file is not a picture";
+                $uploadOk = 0;
+            }
+            if ($_FILES["file"]["size"] > 1000000) {
+                $_SESSION['error'] = "To big file";
+                $uploadOk = 0;
+            }
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg")
+            {
+                $_SESSION['error'] = "Only jpg, png and jpeg are allowed";
+                $uploadOk = 0;
+            }
+            if ($uploadOk == 0) {
+                header("Location:index.php");
+            } else {
+                if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+                        unset($_SESSION["error"]);
+                        $picture = basename($_FILES["file"]["name"]);
+                } else {
+                    header("Location:index.php");
+                }
+            }
+        }
 
         //Izbere ce uporabnik obstaja
-        $stmt = $link->prepare("UPDATE users SET username=?, location=?, bio=?, born=? WHERE id=?");
-        $stmt->bind_param("sssss", $username, $location, $bio, $born, $id);
+        $stmt = $link->prepare("UPDATE users SET username=?, location=?, bio=?, born=?, avatar=? WHERE id=?");
+        $stmt->bind_param("ssssss", $username, $location, $bio, $born, $picture, $id);
         $stmt->execute();
         $result = $stmt->get_result();
         header("Location: profile.php");
@@ -169,6 +204,55 @@
             header("Location: index.php");
         }
         // Preveri ce je user follow-u osebi
+    }else if(isset($_GET["action"]) && $_GET["action"] === "follow"){
+        // Preveri ce je id stevilka
+        if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
+            $friend_id = filter_input(INPUT_GET, "id");
+
+            $stmt = $link->prepare("SELECT id FROM friends WHERE (user_id=?) AND (friend_id=?);");
+            $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = mysqli_fetch_array($result);
+
+            // Preveri ce ze imata povezavo
+
+            if(mysqli_num_rows($result) == 0){
+                $stmt = $link->prepare("INSERT INTO friends (user_id, friend_id) VALUES (?,?)");
+                $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
+                $stmt->execute();
+            }
+
+            header("Location: index.php");
+
+        } else {
+            header("Location: index.php");
+        }
+
+        //Preveri ce je bil kliknjen unfollow
+    }else if(isset($_GET["action"]) && $_GET["action"] === "unfollow"){
+        // Preveri ce je id stevilka
+        if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
+            $friend_id = filter_input(INPUT_GET, "id");
+
+            $stmt = $link->prepare("SELECT id FROM friends WHERE (user_id=?) AND (friend_id=?);");
+            $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = mysqli_fetch_array($result);
+
+            // Preveri ce ze imata povezavo
+            if(mysqli_num_rows($result) > 0){
+                $stmt = $link->prepare("DELETE FROM friends WHERE id=?;");
+                $stmt->bind_param('i', $row["id"]);
+                $stmt->execute();
+            }
+           header("Location: index.php");
+
+        }else{
+            header("Location: index.php");
+        }
+
     }else if(isset($_GET["logout"]) && $_GET["logout"] === true){
         unset($_SESSION["user_id"]);
         session_destroy();
