@@ -17,13 +17,9 @@
             <div class="nav">
                 <img src="./img/logo.jpg" alt="Logo" class="image">
                 <ul>
-                    <li onclick="location.href='index.php'">Home</li>
-                    <li>Explore</li>
-                    <li>Notifications</li>
-                    <li>Messages</li>
-                    <li>Bookmarks</li>
-                    <li>Lists</li>
-                    <li class="active" onclick="location.href='profile.php'">Profile</li>
+                    <li  onclick="location.href='index.php'">Home</li>
+                    <li onclick="location.href='followers-list.php'">Lists</li>
+                    <li onclick="location.href='profile.php'" class="active">Profile</li>
                     <?php
                         
                         if($_SESSION["user_type"] == "Administrator"){
@@ -34,7 +30,7 @@
                 </ul>
             </div>
             <div class="message">
-                <h2>Home</h2>
+                <h2>Profile</h2>
                 <form method="POST" action="./user.php" enctype="multipart/form-data" class="profile">
                     <?php
                         // Izbere uporabnikove podatke
@@ -71,12 +67,17 @@
                         $result = mysqli_query($link, $sql);
                         while($row = mysqli_fetch_array($result))
                         {
-                            echo "<div class='sideline-people'>";
-                                echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
-                                echo "<p>" . $row["username"] . "</p>";
+                            $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
+                            $resultFriends = mysqli_query($link, $sqlFriends);
 
-                                $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
-                                $resultFriends = mysqli_query($link, $sqlFriends);
+                            if(mysqli_num_rows($resultFriends) == 0){
+                                echo "<div class='sideline-people'>";
+                                if(isset($row["avatar"])){
+                                    echo "<img src='./uploads-profile/". $row["avatar"] ."' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $row["id"] ."'><br>";
+                                }else{
+                                    echo "<img src='./img/avatar.png' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $row["id"] ."'><br>";
+                                }
+                                echo "<p>" . $row["username"] . "</p>";
 
                                 if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
@@ -84,9 +85,9 @@
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
                                 }
                             echo "</div>";
+                            }
                         }
                     ?>
-                    <div class="footer"></div>
                 </div>  
             </div>
         </div>
@@ -104,6 +105,10 @@
 
             today = yyyy+'-'+mm+'-'+dd;
             document.getElementsByName("born")[0].setAttribute("max", today);
+        </script>
+        <script>
+            var div = document.getElementsByClassName("message")[0];
+            div.style.height = "100vh";
         </script>
     </body>
 </html>

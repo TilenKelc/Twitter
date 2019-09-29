@@ -32,11 +32,7 @@
                 <img src="./img/logo.jpg" alt="Logo" class="image">
                 <ul>
                     <li class="active" onclick="location.href='index.php'">Home</li>
-                    <li>Explore</li>
-                    <li>Notifications</li>
-                    <li>Messages</li>
-                    <li>Bookmarks</li>
-                    <li>Lists</li>
+                    <li onclick="location.href='followers-list.php'">Lists</li>
                     <li onclick="location.href='profile.php'">Profile</li>
                     <?php
                         
@@ -116,6 +112,14 @@
                         echo "</div>";
                         $count++;
                     }
+                    if($count < 4){
+                        ?>
+                            <script>
+                                var div = document.getElementsByClassName("message")[0];
+                                div.style.height = "100vh";
+                            </script>
+                        <?php
+                    }
                 ?>
             </div>
             <div class="sideline">
@@ -127,12 +131,17 @@
                         $result = mysqli_query($link, $sql);
                         while($row = mysqli_fetch_array($result))
                         {
-                            echo "<div class='sideline-people'>";
-                                echo "<img src='./img/avatar.png' alt='./img/avatar.png'><br>";
-                                echo "<p>" . $row["username"] . "</p>";
+                            $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
+                            $resultFriends = mysqli_query($link, $sqlFriends);
 
-                                $sqlFriends = "SELECT * FROM friends WHERE (user_id =".  $id .") AND (friend_id = ". $row["id"] .");";
-                                $resultFriends = mysqli_query($link, $sqlFriends);
+                            if(mysqli_num_rows($resultFriends) == 0){
+                                echo "<div class='sideline-people'>";
+                                if(isset($row["avatar"])){
+                                    echo "<img src='./uploads-profile/". $row["avatar"] ."' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $row["id"] ."'><br>";
+                                }else{
+                                    echo "<img src='./img/avatar.png' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $row["id"] ."'><br>";
+                                }
+                                echo "<p>" . $row["username"] . "</p>";
 
                                 if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
@@ -140,9 +149,9 @@
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=follow'>Follow</div>";
                                 }
                             echo "</div>";
+                            }
                         }
                     ?>
-                    <div class="footer"></div>
                 </div>  
             </div>
         </div>

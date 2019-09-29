@@ -72,6 +72,17 @@
         $id = $_SESSION["user_id"];
         $picture = null;
 
+        $stmt = $link->prepare("SELECT avatar FROM users WHERE id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = mysqli_fetch_array($result);
+        if(isset($row["avatar"]) && $_FILES["file"]["name"]){
+            $path = "./uploads-profile/". $row["avatar"];
+            unlink($path);
+        }
+        
+
         if($_FILES["file"]["name"]){
             // Sliko preveri ce je pravi format, prevelika, ali pa ni slika ter jo shrani
             $target_dir = "uploads-profile/";

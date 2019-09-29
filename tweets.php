@@ -170,11 +170,23 @@
             header("Location: index.php");
         }
 
-        //Preveri ce je bil kliknjen unfollow
+        //Preveri ce je bil kliknjen delete
     }else if(isset($_GET["action"]) && $_GET["action"] === "delete"){
         // Preveri ce je id stevilka
         if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
             $id = filter_input(INPUT_GET, "id");
+
+            $stmt = $link->prepare("SELECT picture FROM tweets WHERE id=?;");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = mysqli_fetch_array($result);
+
+            // Preveri ce slika obstaja
+            if(mysqli_num_rows($result) > 0){
+                $path = "./uploads-profile/". $row["avatar"];
+                unlink($path);
+            }
 
             $stmt = $link->prepare("DELETE FROM tweets WHERE id=?;");
             $stmt->bind_param('i', $id);
