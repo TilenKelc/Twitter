@@ -88,7 +88,7 @@ li:hover{
 .message>form>textarea{
     float:left;
     height: 50px;
-    width: 80%;
+    width: 75%;
     resize: none;
     padding: 5px;
     border: none;
@@ -143,6 +143,9 @@ li:hover{
     text-align: center;
     margin-top: 30%;
 }
+.box>h2{
+    color: white !important;
+}
 .box>img{
     height: 200px;
     width: 200px;
@@ -150,7 +153,6 @@ li:hover{
 .right-side>form{
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
     text-align: center;
     margin-top: 20%;
 }
@@ -663,4 +665,63 @@ h2{
 }
 .people-list-followers{
     display: none;
+}
+.fa{
+    color: #66ccff;
+    font-size: 30px !important;
+    float: right;
+    margin-right: 20px;
+    margin-top: 4%;
+    transition: 0.5s;
+}
+@media (min-width: 320px) and (max-width: 850px){
+    .right-side{
+        width: 100%;
+        height: 64%;
+        float: left;
+    }
+    .right-side>form{
+        margin-top: 0%;
+    }
+    .left-side{
+        float: left;
+        width: 100%;
+        height: 35%;
+    }
+    .box{
+        margin-top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .box>img{
+        width: 80%;
+        height: 80%;
+    }
+    .box>h2{
+        margin: 0;
+    }
+    .nav{
+        width: 100%;
+        height: auto;
+        float: left;
+        padding-bottom: 10px;
+    }
+    .nav>ul{
+        display: none;
+    }
+    .nav>img{
+        margin-left: 10%;
+        margin-top: 5%;
+    }
+    .message{
+        width: 100%;
+    }
+    .message>h2{
+        border: 1px solid silver;
+        color: white;
+        background-color: #66ccff;
+    }
+    .sideline{
+        display: none;
+    }
 }

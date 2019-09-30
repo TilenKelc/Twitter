@@ -14,6 +14,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <meta name="google-signin-scope" content="profile email">
         <meta name="google-signin-client_id" content="622226021483-gu8duueds3hoal4anv9dq7busec1bf5d.apps.googleusercontent.com">

@@ -11,11 +11,14 @@
         <title>Twitter</title>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <div class="main">
             <div class="nav">
                 <img src="./img/logo.jpg" alt="Logo" class="image">
+                <i class="fa fa-bars" onclick="menuChange()"></i>
                 <ul>
                     <li  onclick="location.href='index.php'">Home</li>
                     <li onclick="location.href='followers-list.php'">Lists</li>
@@ -105,6 +108,28 @@
 
             today = yyyy+'-'+mm+'-'+dd;
             document.getElementsByName("born")[0].setAttribute("max", today);
+            var menuChange = function(){
+                var ul = document.getElementsByTagName("ul")[0];
+                if(ul.style.display == "block"){
+                    ul.style.display = "none";
+                }else{
+                    ul.style.display = "block";
+                }
+            }
+
+            function myFunction(x) {
+                if (x.matches) {
+                    var menuImg = document.getElementsByClassName("fa fa-bars")[0]; 
+                    menuImg.style.display = "inline block";
+                } else {
+                    var menuImg = document.getElementsByClassName("fa fa-bars")[0]; 
+                    menuImg.style.display = "none";
+                }
+            }
+
+            var x = window.matchMedia("(max-width: 850px)")
+            myFunction(x)
+            x.addListener(myFunction)
         </script>
         <script>
             var div = document.getElementsByClassName("message")[0];
