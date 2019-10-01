@@ -37,18 +37,15 @@ li:hover{
 .nav{
     width: 30%;
     float: left;
-    height: 100%;
 }
 .message{
     width: 39%;
-    height: 100%;
     float: left;
     border-right: solid silver 0.5px;
     border-left: solid silver 0.5px;
 }
 .sideline{
     width: 30%;
-    height: 100%;
     float: left;
     margin: 0;
     padding: 0;
@@ -715,8 +712,9 @@ h2{
         height: 100%;
     }
     .box>img{
-        width: 50%;
-        height: 80%;
+        width: 30%;
+        height: 50%;
+        margin-top: 10px;
     }
     .box>h2{
         margin: 0;
