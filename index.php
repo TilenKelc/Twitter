@@ -22,6 +22,7 @@
 <html>
     <head>
         <title>Twitter</title>
+        <link rel="icon" href="./img/logo.ico" />
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -71,7 +72,7 @@
                 </form>
                 <?php
                     $id = $_SESSION["user_id"];
-                    $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar, u.id as user_id FROM tweets t INNER JOIN users u ON t.user_id = u.id ORDER BY(t.time) DESC";
+                    $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar, u.id as user_id FROM tweets t INNER JOIN users u ON t.user_id = u.id WHERE (t.user_id = $id) OR (t.user_id = (SELECT f.friend_id FROM friends f INNER JOIN users u ON u.id=f.user_id WHERE (f.user_id = $id))) ORDER BY(t.time) DESC";
                     $result = mysqli_query($link, $sql);
                     $count = 0;
                     while($row = mysqli_fetch_array($result))
