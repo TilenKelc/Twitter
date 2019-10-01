@@ -1,8 +1,8 @@
 <?php
-    $host = "localhost";
-    $user = "root";
-    $password = "";
-    $database = "twitter";
+    $host = "152.89.234.45";
+    $user = "Tilen";
+    $password = "Diego123...";
+    $database = "tilenkel_twitter";
 
     $link = mysqli_connect($host, $user, $password) or die("Server connection error");
     mysqli_select_db($link, $database) or die("Database connection error");
