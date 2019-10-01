@@ -229,8 +229,9 @@
             // Preveri ce ze imata povezavo
 
             if(mysqli_num_rows($result) == 0){
-                $stmt = $link->prepare("INSERT INTO friends (user_id, friend_id) VALUES (?,?)");
-                $stmt->bind_param('ii', $_SESSION["user_id"], $friend_id);
+                $temp = "Following";
+                $stmt = $link->prepare("INSERT INTO friends (user_id, state, friend_id) VALUES (?,?,?)");
+                $stmt->bind_param('isi', $_SESSION["user_id"], $temp ,$friend_id);
                 $stmt->execute();
             }
 

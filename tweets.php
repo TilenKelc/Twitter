@@ -158,7 +158,6 @@
 
             if(mysqli_num_rows($result) > 0){
                 $temp = 1;
-                // Preveri ce je drug uporabnik kliknil na follow in mu nekdo ze sledi
                 $stmt = $link->prepare("UPDATE tweets SET reported=? WHERE id=?;");
                 $stmt->bind_param('ii', $temp, $id);
                 $stmt->execute();

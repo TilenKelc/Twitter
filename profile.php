@@ -80,7 +80,7 @@
                                 }else{
                                     echo "<img src='./img/avatar.png' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $row["id"] ."'><br>";
                                 }
-                                echo "<p>" . $row["username"] . "</p>";
+                                echo "<p onclick=location.href='friends-profile.php?id=". $row["id"] ."'0>" . $row["username"] . "</p>";
 
                                 if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
@@ -130,6 +130,9 @@
             var x = window.matchMedia("(max-width: 850px)")
             myFunction(x)
             x.addListener(myFunction)
+
+            var form = document.getElementsByClassName("profile")[0];
+            form.style.borderBottom = "none";
         </script>
         <script>
             var div = document.getElementsByClassName("message")[0];

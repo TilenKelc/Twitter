@@ -37,15 +37,18 @@ li:hover{
 .nav{
     width: 30%;
     float: left;
+    height: 100%;
 }
 .message{
     width: 39%;
+    height: 100%;
     float: left;
     border-right: solid silver 0.5px;
     border-left: solid silver 0.5px;
 }
 .sideline{
     width: 30%;
+    height: 100%;
     float: left;
     margin: 0;
     padding: 0;
@@ -190,6 +193,9 @@ li:hover{
     margin-left: auto !important;
     margin-right: auto !important;
 }
+.message>.profile{
+    margin-bottom: 50px;
+}
 .right-side>form>input:focus, .message>form>input:focus{
     outline: none;
     border: 1px #66ccff solid;
@@ -330,6 +336,9 @@ li:hover{
     margin: 0;
     padding: 0;
     margin-bottom: 10px;
+}
+.sideline-people>p:hover{
+    cursor: pointer;
 }
 
 .sideline-people-list{
@@ -629,7 +638,7 @@ h2{
 }
 .number-of-followers{
     float: left;
-    width: 49.5%;
+    width: 35%;
     text-align: center;
     vertical-align: middle;
     line-height: 40px;
@@ -638,7 +647,7 @@ h2{
     border-right: solid silver 0.5px;
     transition: 0.5s;
 }
-.number-of-followers:hover{
+.number-of-followers:hover, .number-of-following:hover, .number-of-likes:hover{
     cursor: pointer;
     color: white;
     background-color: #66ccff;
@@ -646,7 +655,18 @@ h2{
 }
 .number-of-following{
     float: left;
-    width: 50%;
+    width: 35%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+    font-size: 20px;
+    transition: 0.5s;
+    color: #66ccff;
+    border-right: solid silver 0.5px;
+}
+.number-of-likes{
+    float: left;
+    width: 29.5%;
     text-align: center;
     vertical-align: middle;
     line-height: 40px;
@@ -654,16 +674,13 @@ h2{
     transition: 0.5s;
     color: #66ccff;
 }
-.number-of-following:hover{
-    cursor: pointer;
-    color: white;
-    background-color: #66ccff;
-    transition: 0.5s;
-}
 .people-list-following{
     display: block;
 }
 .people-list-followers{
+    display: none;
+}
+.people-list-likes{
     display: none;
 }
 .fa{
@@ -674,6 +691,10 @@ h2{
     margin-top: 4%;
     transition: 0.5s;
 }
+.profile-tweet:hover, .username-tweet:hover{
+    cursor: pointer;
+}
+
 @media (min-width: 320px) and (max-width: 850px){
     .right-side{
         width: 100%;
@@ -694,7 +715,7 @@ h2{
         height: 100%;
     }
     .box>img{
-        width: 80%;
+        width: 50%;
         height: 80%;
     }
     .box>h2{
@@ -723,5 +744,8 @@ h2{
     }
     .sideline{
         display: none;
+    }
+    .number-of-followers, .number-of-following, .number-of-likes{
+        font-size: 15px;
     }
 }

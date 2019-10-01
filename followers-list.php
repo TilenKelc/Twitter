@@ -49,7 +49,7 @@
             <div class="message">
                 <h2>List</h2>
                 <div class='numbers'>
-                    <div class='number-of-followers' onclick="Followers(true)">
+                    <div class='number-of-followers' onclick="Followers('following')">
                         <?php
                             $id = $_SESSION["user_id"];
                             $sql = "SELECT COUNT(id) as count FROM friends WHERE (user_id = $id);";
@@ -58,13 +58,22 @@
                             echo "Following: ". $row["count"];
                         ?>
                     </div>
-                    <div class='number-of-following' onclick="Followers(false)">
+                    <div class='number-of-following' onclick="Followers('followers')">
                         <?php
                             $id = $_SESSION["user_id"];
                             $sql = "SELECT COUNT(id) as count FROM friends WHERE (friend_id = $id);";
                             $result = mysqli_query($link, $sql);
                             $row = mysqli_fetch_array($result);
                             echo "Followers: ". $row["count"];
+                        ?>
+                    </div>
+                    <div class='number-of-likes' onclick="Followers('likes')">
+                        <?php
+                            $id = $_SESSION["user_id"];
+                            $sql = "SELECT COUNT(t.id) as count FROM tweets t INNER JOIN users u ON u.id = t.user_id WHERE (t.like_id = $id);";
+                            $result = mysqli_query($link, $sql);
+                            $row = mysqli_fetch_array($result);
+                            echo "Likes: ". $row["count"];
                         ?>
                     </div>
                 </div>
@@ -130,6 +139,63 @@
                         }
                     ?>
                 </div>
+                <div class="people-list-likes">
+                    <?php
+                        $id = $_SESSION["user_id"];
+                        $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar, u.id as user_id FROM tweets t INNER JOIN users u ON t.user_id = u.id WHERE t.like_id = $id";
+                        $result = mysqli_query($link, $sql);
+                        $count = 0;
+                        while($row = mysqli_fetch_array($result))
+                        {
+                            echo "<div class='tweets'>";
+                                if(isset($row["avatar"])){
+                                    echo "<img src='./uploads-profile/". $row["avatar"] ."' class='profile-tweet' onclick=location.href='friends-profile.php?id=". $row["user_id"] ."'>";
+                                }else{
+                                    echo "<img src='./img/avatar.png' class='profile-tweet' onclick=location.href='friends-profile.php?id=". $row["user_id"] ."'>";
+                                }
+                                echo  "<div class='time'>" . $row["time"] . "</div>";
+                                echo  "<div class='username-tweet' onclick=location.href='friends-profile.php?id=". $row["user_id"] ."'>" . $row["username"] . "</div>";
+                                echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
+                                echo  "<div class='like-tweet'>" . $row["likes"] . "</div>";
+                                    if($row["like_id"] == $_SESSION["user_id"]){
+                                        echo  "<div onclick=location.href='tweets.php?like=false&post_id=". $row["id"] ."' class='like-already'>Unlike</div>";
+                                    }else{
+                                        echo  "<div class='like' onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."'>Like</div>";
+                                    }
+                                if($row["picture"]){
+                                    echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   
+                                }
+                                echo "<a onclick=location.href='tweets.php?action=report&id=". $row["id"] ."' class='report'>Report</a>";
+                                echo "<a onclick='Comment(". $count .")' class='comment'>Comment</a>";
+                                echo "<form action='tweets.php?id=". $row["id"] ."' enctype='multipart/form-data' method='POST' class='form-change'>";
+                                    echo "<input type='text' placeholder='Your opinion' name='reply'>";
+                                echo "</form>";
+    
+                                echo "<div class='replies'>";
+                                    $sqlReplies = "SELECT u.username, r.reply, r.date FROM tweets t INNER JOIN replies r ON r.tweet_id = t.id INNER JOIN users u ON u.id=r.user_id WHERE t.id = '". $row["id"]. "'";
+                                    $resultReplies = mysqli_query($link, $sqlReplies);
+                                    while($row = mysqli_fetch_array($resultReplies))
+                                    {
+                                        echo "<div class='reply'>";
+                                            echo "<div class='username-replie'>". $row["username"]. "</div>";
+                                            echo "<div class='date-replie'>". $row["date"] ."</div>";
+                                            echo "<div class='text-reply'>". $row["reply"]. "</div>";
+                                        echo "</div>"; 
+                                    }
+                                echo "</div>";
+                            echo "</div>";
+                            $count++;
+                        }
+                        if($count < 4){
+                            ?>
+                                <script>
+                                    var div = document.getElementsByClassName("message")[0];
+                                    div.style.height = "100vh";
+                                </script>
+                            <?php
+                        }
+                    ?>
+                </div>
             </div>
             <div class="sideline">
                 <div class="people">
@@ -150,7 +216,7 @@
                                 }else{
                                     echo "<img src='./img/avatar.png' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $row["id"] ."'><br>";
                                 }
-                                echo "<p>" . $row["username"] . "</p>";
+                                echo "<p onclick=location.href='friends-profile.php?id=". $row["id"] ."'>" . $row["username"] . "</p>";
 
                                 if(mysqli_num_rows($resultFriends) > 0){
                                     echo "<div class='follow' onclick=location.href='user.php?id=". $row["id"] ."&action=unfollow'>Following</div>";
@@ -168,14 +234,37 @@
             var Followers = function(check){
                 var people = document.getElementsByClassName("people-list-following")[0];
                 var strangers = document.getElementsByClassName("people-list-followers")[0];
-                if(!check){
+                var likes = document.getElementsByClassName("people-list-likes")[0];
+                if(check === 'followers'){
                     people.style.display = "none";
                     strangers.style.display = "block";
-                }else{
+                    likes.style.display = "none";
+                }else if(check === 'following'){
                     people.style.display = "block";
                     strangers.style.display = "none";
+                    likes.style.display = "none";
+                }else{
+                    people.style.display = "none";
+                    strangers.style.display = "none";
+                    likes.style.display = "block";
                 }
             }
+
+            var Comment = function(count){
+                var text = document.getElementsByClassName("text-tweet")[count];
+                var check = document.getElementsByClassName("form-change")[count];
+                var replies = document.getElementsByClassName("replies")[count];
+                if(check.style.display == 'block'){
+                    replies.style.display = "none";
+                    text.style.marginBottom = "20px";
+                    check.style.display = "none";
+                }else{
+                    replies.style.display = "block";
+                    text.style.marginBottom = "5px";
+                    check.style.display = "block";
+                }
+            }
+
             var menuChange = function(){
                 var ul = document.getElementsByTagName("ul")[0];
                 if(ul.style.display == "block"){
