@@ -12,3 +12,4 @@ On the site, you can:
 - you can edit your profile and upload your profile picture,
 - the administrator can also delete posts.
 
+For this project to work all you need to do is download the files, upload the database to a server and that is it. The api's used are being either already hosted with the files or are being accessed directly by url's.
