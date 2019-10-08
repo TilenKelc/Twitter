@@ -17,5 +17,5 @@ For this project to work all you need to do is download the files, upload the da
 Localhost
 If used for localhost you will need to place the files in XAMPP, folder on your computer,  and use it with Apache and MySql turned on.
 
-(https://www.tilenkelc.si/twitter "Twitter")
+[Twitter](https://www.tilenkelc.si/twitter "Twitter")
 
