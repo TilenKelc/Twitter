@@ -1,4 +1,6 @@
 # Twitter
+
+![alt text](http://url/to/img.png)
 This website is part of a school project, to code the backend of twitter functions. It is not a fake Twitter.
 
 On the site, you can:
