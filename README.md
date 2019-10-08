@@ -1,7 +1,6 @@
 # Twitter
 
-![alt text](http://url/to/img.png)
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://github.com/fpv-life/Twitter/blob/master/img/welcome.PNG)
 This website is part of a school project, to code the backend of twitter functions. It is not a fake Twitter.
 
 On the site, you can:
