@@ -12,4 +12,10 @@ On the site, you can:
 - you can edit your profile and upload your profile picture,
 - the administrator can also delete posts.
 
-For this project to work all you need to do is download the files, upload the database to a server and that is it. The api's used are being either already hosted with the files or are being accessed directly by url's.
+For this project to work all you need to do is download the files, upload the database to a server and that is it. The api's used are being either already hosted with the files or are being accessed directly by url's. The database is MySql 5.0 and is used with phpmyadmin.
+
+Localhost
+If used for localhost you will need to place the files in XAMPP, folder on your computer,  and use it with Apache and MySql turned on.
+
+(https://www.tilenkelc.si/twitter "Twitter")
+
