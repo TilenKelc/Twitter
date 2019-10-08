@@ -27,5 +27,9 @@ The main twitter page
 ![alt text](https://github.com/fpv-life/Twitter/blob/master/img/twitter.PNG)
 
 
+The database in ToadDatabaseModeler
+![alt text](https://github.com/fpv-life/Twitter/blob/master/img/Zajeta slika.PNG)
+
+
 
 
