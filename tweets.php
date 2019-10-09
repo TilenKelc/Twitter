@@ -124,20 +124,23 @@
             $stmt = $link->prepare("SELECT COUNT(likes) as likes FROM tweets WHERE id=?;");
             $stmt->bind_param('i', $post_id);
             $stmt->execute();
-            $stmt->get_result();
             $result = $stmt->get_result();
             $row = mysqli_fetch_array($result);
-
+            
             $count = $row["likes"];
-            $count--;
-            $null = 0;
+            $count = $count - 1;
+            $null = null;
 
-            $stmt = $link->prepare("UPDATE tweets SET likes = ?, like_id = ? WHERE id =?");
-            $stmt->bind_param('iii', $count, $null, $post_id);
+            $stmt = $link->prepare("UPDATE tweets SET likes = ?, like_id=? WHERE id =?");
+            $stmt->bind_param('isi', $count,$null, $post_id);
             $stmt->execute();
             $stmt->get_result();
 
-            header("Location: index.php");
+            if(isset($_GET['site']) && $_GET['site'] === 'list'){
+                header("Location: followers-list.php");
+            }else{
+                header("Location: index.php");
+            }
 
         } else {
             header("Location: index.php");

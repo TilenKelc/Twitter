@@ -59,7 +59,7 @@
                     $helper = $fb->getRedirectLoginHelper();
 
                     $permissions = ['email'];
-                    $loginUrl = $helper->getLoginUrl('https://localhost/twitter/fb-callback.php', $permissions);
+                    $loginUrl = $helper->getLoginUrl('https://tilenkelc.si/twitter/fb-callback.php', $permissions);
                     
                     echo '<button class="loginBtn loginBtn--facebook" onclick=location.href="'. htmlspecialchars($loginUrl) .'">Sign In with Facebook</button><br>';
 
@@ -68,7 +68,7 @@
                     // init configuration
                     $clientID = '622226021483-gu8duueds3hoal4anv9dq7busec1bf5d.apps.googleusercontent.com';
                     $clientSecret = 'jYg2DmZUjm6LvIzEJp_lZ0Q5';
-                    $redirectUri = 'https://localhost/twitter/google-callback.php';
+                    $redirectUri = 'https://tilenkelc.si/twitter/google-callback.php';
                     
                     // create Client Request to access Google API
                     $client = new Google_Client();

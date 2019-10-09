@@ -5,7 +5,7 @@
     // init configuration
     $clientID = '622226021483-gu8duueds3hoal4anv9dq7busec1bf5d.apps.googleusercontent.com';
     $clientSecret = 'jYg2DmZUjm6LvIzEJp_lZ0Q5';
-    $redirectUri = 'https://localhost/twitter/google-callback.php';
+    $redirectUri = 'https://tilenkelc.si/twitter/google-callback.php';
     
     // create Client Request to access Google API
     $client = new Google_Client();

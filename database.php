@@ -1,6 +1,6 @@
 <?php
-    $host = "152.89.234.45";
-    $user = "Tilen";
+    $host = "localhost";
+    $user = "tilenkel_Tilen";
     $password = "Diego123...";
     $database = "tilenkel_twitter";
 

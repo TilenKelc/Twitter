@@ -106,20 +106,20 @@
                 $uploadOk = 0;
             }
             if ($uploadOk == 0) {
-                header("Location:index.php");
+                header("Location: profile.php");
             } else {
                 if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
                         unset($_SESSION["error"]);
                         $picture = basename($_FILES["file"]["name"]);
                 } else {
-                    header("Location:index.php");
+                    header("Location: profile.php");
                 }
             }
         }
 
         //Izbere ce uporabnik obstaja
         $stmt = $link->prepare("UPDATE users SET username=?, location=?, bio=?, born=?, avatar=? WHERE id=?");
-        $stmt->bind_param("ssssss", $username, $location, $bio, $born, $picture, $id);
+        $stmt->bind_param("sssssi", $username, $location, $bio, $born, $picture, $id);
         $stmt->execute();
         $result = $stmt->get_result();
         header("Location: profile.php");
@@ -215,7 +215,7 @@
             header("Location: index.php");
         }
         // Preveri ce je user follow-u osebi
-    }else if(isset($_GET["action"]) && $_GET["action"] === "follow"){
+    }else if(isset($_GET["action"]) && $_GET["action"] == "follow"){
         // Preveri ce je id stevilka
         if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
             $friend_id = filter_input(INPUT_GET, "id");
@@ -234,15 +234,18 @@
                 $stmt->bind_param('isi', $_SESSION["user_id"], $temp ,$friend_id);
                 $stmt->execute();
             }
-
-            header("Location: index.php");
+            if(isset($_GET['site']) && $_GET['site'] === 'list'){
+                header("Location: followers-list.php");
+            }else{
+                header("Location: index.php");
+            }
 
         } else {
             header("Location: index.php");
         }
 
         //Preveri ce je bil kliknjen unfollow
-    }else if(isset($_GET["action"]) && $_GET["action"] === "unfollow"){
+    }else if(isset($_GET["action"]) && $_GET["action"] == "unfollow"){
         // Preveri ce je id stevilka
         if (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT)){
             $friend_id = filter_input(INPUT_GET, "id");
@@ -259,7 +262,11 @@
                 $stmt->bind_param('i', $row["id"]);
                 $stmt->execute();
             }
-           header("Location: index.php");
+            if(isset($_GET['site']) && $_GET['site'] === 'list'){
+                header("Location: followers-list.php");
+            }else{
+                header("Location: index.php");
+            }
 
         }else{
             header("Location: index.php");

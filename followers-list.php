@@ -93,7 +93,7 @@
                                 if(isset($row["avatar"])){
                                     echo "<img src='./uploads-profile/". $rowFriends["avatar"] ."' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $rowFriends["id"] ."'><br>";
                                 }else{
-                                    echo "<img src='./img/avatar.png' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $rowFriends["id"] ."'><br>";
+                                    echo "<img src='./img/avatar.png' alt='./img/avatar.png' onclick=location.href='friends-profile.php?id=". $rowFriends["id"] ."><br>";
                                 }
                                 echo "<p>" . $rowFriends["username"] . "</p>";
 
@@ -101,9 +101,9 @@
                                 $resultFriends = mysqli_query($link, $sqlFriends);
 
                                 if(mysqli_num_rows($resultFriends) > 0){
-                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["friend_id"] ."&action=unfollow'>Following</div>";
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["friend_id"] ."&action=unfollow&site=list'>Following</div>";
                                 }else{
-                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["friend_id"] ."&action=follow'>Follow</div>";
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["friend_id"] ."&action=follow&site=list'>Follow</div>";
                                 }
                             echo "</div>";
                         }
@@ -132,9 +132,9 @@
                                 $resultFriends = mysqli_query($link, $sqlFriends);
 
                                 if(mysqli_num_rows($resultFriends) > 0){
-                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["user_id"] ."&action=unfollow'>Following</div>";
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["user_id"] ."&action=unfollow&site=list'>Following</div>";
                                 }else{
-                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["user_id"] ."&action=follow'>Follow</div>";
+                                    echo "<div class='follow' onclick=location.href='user.php?id=". $row["user_id"] ."&action=follow&site=list'>Follow</div>";
                                 }
                             echo "</div>";
                         }
@@ -159,9 +159,9 @@
                                 echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
                                 echo  "<div class='like-tweet'>" . $row["likes"] . "</div>";
                                     if($row["like_id"] == $_SESSION["user_id"]){
-                                        echo  "<div onclick=location.href='tweets.php?like=false&post_id=". $row["id"] ."' class='like-already'>Unlike</div>";
+                                        echo  "<div onclick=location.href='tweets.php?like=false&post_id=". $row["id"] ."&site=list' class='like-already'>Unlike</div>";
                                     }else{
-                                        echo  "<div class='like' onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."'>Like</div>";
+                                        echo  "<div class='like' onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."&site=list'>Like</div>";
                                     }
                                 if($row["picture"]){
                                     echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   

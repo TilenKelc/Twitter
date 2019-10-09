@@ -21,6 +21,14 @@ ul{
     margin-right: auto;
     padding: 0;
 }
+.like-tweet>a{
+    text-decoration: none;
+    color: black;
+}
+.like{
+    color: black;
+    text-decoration: none;
+}
 li:hover{
     cursor: pointer;
     color: white;
@@ -85,6 +93,9 @@ li:hover{
     margin-bottom: 10px;
     display: block;
 }
+.message>form{
+    border-top: solid silver 0.5px;
+}
 .message>form>textarea{
     float:left;
     height: 50px;
@@ -98,10 +109,25 @@ li:hover{
     outline: none;
 }
 .message>h2{
-    border-bottom: 1px solid silver;
     margin: 0;
     padding: 0;
     padding: 20px;
+    width: 100% !important;
+    position: relative;
+}
+.search{
+    width: 50% !important;
+    position: absolute !important;
+    top: 25px;
+    right: 20px;
+}
+.search>input{
+    border-radius: 10px;
+    padding: 5px;
+    border: solid 1px silver;
+}
+.search>input:focus{
+    outline: none;
 }
 .message>form>input[type="submit"]{
     width: 100px;

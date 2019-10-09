@@ -48,7 +48,9 @@
                 </ul>
             </div>
             <div class="message">
-                <h2>Home</h2>
+                <h2>Home <form method="GET" action="index.php?hash=hash" enctype="multipart/form-data" class="search">
+                    <input type="text" name="hash" placeholder="Search hashteg">
+                </form></h2>
                 <?php
                     $id =$_SESSION["user_id"];
                     $sql = "SELECT avatar FROM users WHERE (id = $id);";
@@ -61,7 +63,7 @@
                     }
                 ?>
                 <form method="POST" action="./tweets.php" enctype="multipart/form-data">
-                    <textarea placeholder="What is going on?" class="text" name="tweet"></textarea>
+                    <textarea placeholder="What is going on?" class="text" name="tweet" maxlength="280"></textarea>
                     <div class='upload-image'>
                         <div class="upload-btn-wrapper">
                             <button class="btn">Image</button>
@@ -72,7 +74,17 @@
                 </form>
                 <?php
                     $id = $_SESSION["user_id"];
-                    $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar, u.id as user_id FROM tweets t INNER JOIN users u ON t.user_id = u.id WHERE (t.user_id = $id) OR (t.user_id = (SELECT f.friend_id FROM friends f INNER JOIN users u ON u.id=f.user_id WHERE (f.user_id = $id))) ORDER BY(t.time) DESC";
+                    if(isset($_GET["hash"])){
+                        $hash = $_GET["hash"];
+                        if($hash[0] === '#'){
+                            $hash = $hash;
+                        }else{
+                            $hash = '#'.$hash;
+                        }
+                        $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar, u.id as user_id FROM tweets t INNER JOIN users u ON t.user_id = u.id WHERE (t.text LIKE '%".$hash."%') ORDER BY(t.time) DESC";
+                    }else{
+                        $sql = "SELECT t.id, t.picture, t.text, t.likes, t.time, t.like_id, u.username, u.avatar, u.id as user_id FROM tweets t INNER JOIN users u ON t.user_id = u.id WHERE (t.user_id = $id) OR (t.user_id IN (SELECT f.friend_id FROM friends f INNER JOIN users u ON u.id=f.user_id WHERE (f.user_id = $id))) ORDER BY(t.time) DESC";
+                    }
                     $result = mysqli_query($link, $sql);
                     $count = 0;
                     while($row = mysqli_fetch_array($result))
@@ -85,12 +97,38 @@
                             }
                             echo  "<div class='time'>" . $row["time"] . "</div>";
                             echo  "<div class='username-tweet' onclick=location.href='friends-profile.php?id=". $row["user_id"] ."'>" . $row["username"] . "</div>";
-                            echo  "<div class='text-tweet'>" . $row["text"] . "</div>";
+                                if (strpos($row["text"], '#') !== false) {
+                                    echo  "<div class='text-tweet'><pre>";
+                                    $temp = false;
+                                    $hashteg = "";
+                                    for ($i = 0; $i < strlen($row["text"]); $i++) {
+                                        if(strpos($row["text"][$i], '#') !== false){
+                                            $temp = true;
+                                            echo "<a href='index.php?hash=$hashteg' class='link'>#";
+                                        }else if($row["text"][$i] === " " || $row["text"][$i] === null){
+                                            $temp = false;
+                                            echo "</a> ";
+                                        }else if(strpos($row["text"][$i], '#') === false){
+                                            echo $row["text"][$i];
+                                        }else if($temp){
+                                            echo $row["text"][$i];
+                                            $hashteg = $hashteg . $row["text"][$i];
+                                        }
+                                    }
+                                    //$raw = $row["text"];
+                                    //$text = explode($raw, $hashteg);
+                                    //echo $raw;//$text;
+                                    //echo "<a href='index.php?hash=$hashteg'>#". $hashteg ."</a>";
+                                    echo "</pre></div>";
+                                }else{
+                                    echo  "<div class='text-tweet'><pre>" . $row["text"] . "</pre></div>";
+                                }
+                            
                             echo  "<div class='like-tweet'>" . $row["likes"] . "</div>";
                                 if($row["like_id"] == $_SESSION["user_id"]){
-                                    echo  "<div onclick=location.href='tweets.php?like=false&post_id=". $row["id"] ."' class='like-already'>Unlike</div>";
+                                    echo  "<div  class='like-already'><a href='tweets.php?like=false&post_id=". $row["id"] ."'>Unlike</a></div>";
                                 }else{
-                                    echo  "<div class='like' onclick=location.href='tweets.php?like=true&post_id=". $row["id"] ."'>Like</div>";
+                                    echo  "<a href='tweets.php?like=false&post_id=". $row["id"] ."' class='like'>Like</a>";
                                 }
                             if($row["picture"]){
                                 echo  "<img src='./uploads/". $row["picture"] ."' alt='' class='image-tweet'>";   
@@ -160,6 +198,13 @@
             </div>
         </div>
         <script>
+            var y = document.getElementsByClassName("link");
+            for (var i = 0; i < y.length; i++) {
+                var mystring = y[i].innerHTML;
+                mystring = mystring.replace('#','');
+                y[i].href = 'index.php?hash=' + mystring;
+            }
+        
             var menuChange = function(){
                 var ul = document.getElementsByTagName("ul")[0];
                 if(ul.style.display == "block"){
